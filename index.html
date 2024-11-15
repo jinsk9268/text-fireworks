@@ -7,7 +7,31 @@
 		<link rel="stylesheet" href="/src/style/style.css" />
 	</head>
 	<body>
-		<div>하이</div>
+		<section id="home">
+			<form id="input_form">
+				<label for="user_input" id="notice">
+					원하는 글자를 입력한 후 완료 버튼 또는 엔터를 눌러주세요!<br />
+					<span>(1글자부터 10글자까지 입력 가능합니다.)</span>
+				</label>
+				<div>
+					<input
+						id="user_input"
+						name="user_input"
+						type="text"
+						minlength="1"
+						maxlength="10"
+						placeholder="글자를 입력해주세요."
+						autocomplete="off"
+					/>
+				</div>
+				<button id="submit_btn" type="submit" aria-label="완료 버튼">완료</button>
+			</form>
+		</section>
+
+		<section id="fireworks">
+			<canvas id="canvas"></canvas>
+		</section>
+
 		<script type="module" src="/src/index.js"></script>
 	</body>
 </html>
