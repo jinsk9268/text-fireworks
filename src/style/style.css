@@ -1,0 +1,123 @@
+html,
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	overflow: hidden;
+	font-family: "Do Hyeon";
+	background-color: black;
+}
+
+#home {
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	font-size: 1.5rem;
+}
+
+@media (max-width: 480px) {
+	#home {
+		font-size: 1.25rem;
+	}
+}
+
+#input_form {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+
+#notice {
+	margin-bottom: 2.5rem;
+	color: white;
+	text-align: center;
+	line-height: 1.5;
+	animation: 1.5s linear 0.5s infinite alternate scale-adjustment;
+	z-index: 0;
+}
+
+#notice span {
+	font-size: 1.125rem;
+}
+
+@keyframes scale-adjustment {
+	from {
+		transform: scale(1);
+	}
+	to {
+		transform: scale(0.9);
+	}
+}
+
+#input_box {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 25%;
+	border-radius: 30px;
+	box-shadow: 0px 0px 20px 10px white, 0px 0px 50px 30px deepskyblue, 0px 0px 80px 40px rgba(0, 191, 255, 0.5);
+	z-index: 0;
+}
+
+@media (max-width: 767px) {
+	#input_box {
+		width: 40%;
+	}
+}
+
+@media (max-width: 480px) {
+	#input_box {
+		width: 50%;
+	}
+}
+
+#user_input {
+	width: 100%;
+	padding: 0.875rem;
+	border: none;
+	border-radius: 30px;
+	box-shadow: inset 10px 10px 20px rgba(255, 255, 255, 0.35), inset -10px -10px 20px rgba(255, 255, 255, 0.35);
+	background-color: black;
+	opacity: 0.9;
+	color: white;
+	font-size: large;
+	text-align: center;
+	font-family: "Do Hyeon";
+	font-size: 1.125rem;
+}
+
+input:focus {
+	outline: none;
+}
+
+#submit_btn {
+	margin-top: 3rem;
+	padding: 0.438rem 1.75rem;
+	border: thick double white;
+	border-radius: 20px;
+	background: none;
+	font-family: "Do Hyeon";
+	font-size: 1.25rem;
+	letter-spacing: 0.2rem;
+	color: white;
+}
+
+@media (max-width: 480px) {
+	#submit_btn {
+		font-size: 1.125rem;
+	}
+}
+
+#submit_btn:hover {
+	background: rgba(255, 255, 255, 1);
+	color: rgba(0, 0, 0, 0.8);
+	cursor: pointer;
+}
+
+#fireworks {
+	display: none;
+}
