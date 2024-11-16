@@ -40,10 +40,6 @@ body {
 	z-index: 0;
 }
 
-#notice span {
-	font-size: 1.125rem;
-}
-
 @keyframes scale-adjustment {
 	from {
 		transform: scale(1);
@@ -51,6 +47,10 @@ body {
 	to {
 		transform: scale(0.9);
 	}
+}
+
+#notice span {
+	font-size: 1.125rem;
 }
 
 #input_box {
