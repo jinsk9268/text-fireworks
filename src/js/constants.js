@@ -1,3 +1,10 @@
+const FIREWORKS = "fireworks";
+export const LOCATION_HASH = {
+	HOME: "home",
+	FIREWORKS,
+	FIREWORKS_HASH: `#${FIREWORKS}`,
+};
+
 export const ANIMATION = {
 	FPS: 60,
 };

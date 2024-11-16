@@ -1,6 +1,11 @@
 import { ANIMATION, SCREEN, POS, FONT } from "@/js/constants.js";
 
 class CanvasOption {
+	/**
+	 * 캔버스 기본 설정을 관리하고 초기화하는 클래스
+	 * - 캔버스 엘리먼트를 정의하고, 물리적 및 CSS 크기, DPI, 폰트 설정 등을 처리
+	 * - 화면 크기에 따라 캔버스 옵션을 동적으로 조정
+	 */
 	constructor() {
 		this.canvas = document.getElementById("canvas");
 		if (!this.canvas) {
@@ -28,8 +33,7 @@ class CanvasOption {
 	}
 
 	/**
-	 *
-	 * @param {number} fontSize
+	 * @param {number} [fontSize] 폰트 사이즈, 없을 시 화면 크기에 따라 설정
 	 * @returns {number} 메인 폰트 사이즈 반환 (작은 화면일 경우 별도의 비율 적용)
 	 */
 	setMainFontSize(fontSize) {
