@@ -15,11 +15,12 @@ export const SCREEN = {
 };
 
 export const POS = {
-	MAIN_Y_RATIO: 0.1,
+	MAIN_Y_RATIO: 0.15,
 };
 
 export const FONT = {
 	MAIN_RATIO_GENERAL: 0.09,
 	MAIN_RATIO_SMALL: 0.2,
 	SUB_RATIO: 0.85,
+	FAMILY: "Do Hyeon",
 };

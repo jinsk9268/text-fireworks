@@ -27,7 +27,7 @@ class CanvasOption {
 		this.canvasCssHeight = window.innerHeight;
 		this.isSmallScreen = window.matchMedia(`max-width: ${SCREEN.SMALL_WIDTH}px`).matches;
 		this.mainX = this.canvasCssWidth / 2;
-		this.mainY = Math.floor(this.canvas * POS.MAIN_Y_RATIO);
+		this.mainY = Math.floor(this.canvasCssHeight * POS.MAIN_Y_RATIO);
 		this.mainFontSize = this.setMainFontSize();
 		this.subFontSize = this.setSubFontSize();
 	}
@@ -50,6 +50,14 @@ class CanvasOption {
 	 */
 	setSubFontSize() {
 		return Math.round(this.mainFontSize) * FONT.SUB_RATIO;
+	}
+
+	/**
+	 * @param {number} fontSize
+	 * @returns ctx font 설정을 위한 문자열 반환
+	 */
+	setFontStyle(fontSize) {
+		return `${fontSize}px ${FONT.FAMILY}`;
 	}
 }
 
