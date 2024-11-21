@@ -46,10 +46,14 @@ domElements.inputForm.addEventListener("submit", (e) => {
 window.addEventListener("hashchange", () => {
 	if (isHashFireworks()) {
 		canvas.init();
+		canvas.render();
+
 		switchScreen(FIREWORKS);
 	} else {
+		cancelAnimationFrame(canvas.animationId);
 		domElements.userInput.value = "";
 		canvas.initCanvasVars();
+
 		switchScreen(HOME);
 	}
 });
