@@ -26,6 +26,14 @@ export const FONT = {
 };
 
 export const PARTICLE = {
+	TYPE_TAIL: "tail",
+	TYPE_SPARK: "spark",
+	TYPE_TEXT: "text",
+	TYPE_CIRCLE: "circle",
+	TAIL_POOL: 5,
+	SPARK_POOL: 1000,
+	TEXT_POOL: 5000,
+	CIRCLE_POOL: 1000,
 	RGB: "255, 255, 210",
 	HUE: 20,
 	MIN_SATURATION: 50,

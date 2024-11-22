@@ -5,8 +5,9 @@ class Particle {
 	constructor({ ctx, isSmallScreen, x, y, vx, vy, radius, opacity, friction, color }) {
 		this.ctx = ctx;
 		this.isSmallScreen = isSmallScreen;
-
 		this.initParticleVars({ x, y, vx, vy, radius, opacity, friction, color });
+
+		this.initialState = {};
 	}
 
 	initParticleVars(params = {}) {
@@ -52,6 +53,16 @@ class Particle {
 	update() {
 		this.updateVelocity();
 		this.updatePosition();
+	}
+
+	/**
+	 * 파티클 공통 멤버변수 초기화 및 재사용을 위한 리셋
+	 * @param {object} [params]
+	 */
+	reset(params) {
+		if (!params) params = this.initialState;
+
+		this.initParticleVars(params);
 	}
 }
 
