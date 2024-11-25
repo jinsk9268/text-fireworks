@@ -2,6 +2,20 @@ import { randomFloat, setRgbaColor } from "@/js/utils.js";
 import { PARTICLE } from "@/js/constants.js";
 
 class Particle {
+	/**
+	 * 모든 파티클의 부모 클래스
+	 * @param {object} params
+	 * @param {CanvasRenderingContext2D} params.ctx
+	 * @param {boolean} params.isSmallScreen
+	 * @param {number} [params.x]
+	 * @param {number} [params.y]
+	 * @param {number} [params.vx]
+	 * @param {number} [params.vy]
+	 * @param {number} [params.radius]
+	 * @param {number} [params.opacity]
+	 * @param {number} [params.friction]
+	 * @param {number} [params.color]
+	 */
 	constructor({ ctx, isSmallScreen, x, y, vx, vy, radius, opacity, friction, color }) {
 		this.ctx = ctx;
 		this.isSmallScreen = isSmallScreen;

@@ -59,6 +59,14 @@ class CanvasOption {
 	setFontStyle(fontSize) {
 		return `${fontSize}px ${FONT.FAMILY}`;
 	}
+
+	/**
+	 * @param {string} color
+	 */
+	fillFullCanvas(color) {
+		this.ctx.fillStyle = color;
+		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+	}
 }
 
 export default CanvasOption;

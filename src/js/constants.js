@@ -7,15 +7,17 @@ export const LOCATION_HASH = {
 
 export const ANIMATION = {
 	FPS: 60,
+	TAIL_FPS: 60,
 };
 
 export const SCREEN = {
 	MAX_DPR: 3,
 	SMALL_WIDTH: 480,
+	BG_RGBA: "rgba(0, 0, 0, 0.2)",
 };
 
 export const POS = {
-	MAIN_Y_RATIO: 0.15,
+	MAIN_Y_RATIO: 0.1,
 };
 
 export const FONT = {
@@ -45,4 +47,18 @@ export const PARTICLE = {
 	RADIUS: 1,
 	RADIUS_ADJUST_RATIO: 0.8,
 	FRICTION: 0.93,
+};
+
+export const TAIL = {
+	BASE_QTY: 5,
+	SMALL_EXCLUSION: 75,
+	EXCLUSION: 150,
+	START_X_RATIO: 0.1,
+	MIN_Y_RATIO: 0.7,
+	MAX_Y_RATIO: 0.3,
+	OPACITY_LIMIT: 0.05,
+	DEFAULT_RGB: "255, 255, 210",
+	RADIAN: 0,
+	RADIAN_OFFSET: 1,
+	X_ADJUST_RATE: 0.8,
 };

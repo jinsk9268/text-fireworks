@@ -13,6 +13,11 @@ const PARTICLE_MAP = {
 };
 
 class ParticleManager {
+	/**
+	 * 파티클의 생성 및 초기화와 파티클 풀을 관리
+	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {boolean} isSmallScreen
+	 */
 	constructor(ctx, isSmallScreen) {
 		this.ctx = ctx;
 		this.isSmallScreen = isSmallScreen;
