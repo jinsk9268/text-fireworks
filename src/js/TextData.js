@@ -1,4 +1,5 @@
 import CanvasOption from "@/js/CanvasOption.js";
+import { FONT } from "@/js/constants.js";
 
 class TextData extends CanvasOption {
 	/**
@@ -12,9 +13,9 @@ class TextData extends CanvasOption {
 		this.text = userInput;
 		this.fontSize = fontSize;
 		this.ctx.font = this.setFontStyle(fontSize);
-		this.ctx.textAlign = "center";
-		this.ctx.textBaseline = "middle";
-		this.ctx.strokeStyle = "white";
+		this.ctx.textAlign = FONT.TEXT_ALIGN;
+		this.ctx.textBaseline = FONT.TEXT_BASELINE;
+		this.ctx.strokeStyle = FONT.TEXT_COLOR;
 		this.textPixelData = {};
 	}
 

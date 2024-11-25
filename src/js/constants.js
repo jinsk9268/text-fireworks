@@ -13,6 +13,7 @@ export const ANIMATION = {
 export const SCREEN = {
 	MAX_DPR: 3,
 	SMALL_WIDTH: 480,
+	MAX_WIDTH_RATIO: 0.9,
 	BG_RGBA: "rgba(0, 0, 0, 0.2)",
 };
 
@@ -25,6 +26,11 @@ export const FONT = {
 	MAIN_RATIO_SMALL: 0.2,
 	SUB_RATIO: 0.85,
 	FAMILY: "Do Hyeon",
+	TEXT_ALIGN: "center",
+	TEXT_BASELINE: "middle",
+	TEXT_COLOR: "black",
+	ADJUST_RATIO: 0.95,
+	MIN_SIZE_RATIO: 0.7,
 };
 
 export const PARTICLE = {

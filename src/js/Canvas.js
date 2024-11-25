@@ -1,6 +1,7 @@
 import CanvasOption from "@/js/CanvasOption.js";
 import ParticleManager from "@/js/particle/ParticleManager.js";
-import { TAIL, PARTICLE, ANIMATION, SCREEN } from "@/js/constants.js";
+import TextData from "@/js/TextData.js";
+import { TAIL, PARTICLE, ANIMATION, SCREEN, FONT } from "@/js/constants.js";
 import { randomInt } from "@/js/utils.js";
 
 const { TYPE_TAIL } = PARTICLE;
@@ -33,6 +34,8 @@ class Canvas extends CanvasOption {
 
 		this.text = "";
 		this.textLength = 0;
+		this.mainTextData = {};
+		this.subTextData = {};
 
 		this.tailQty = TAIL.BASE_QTY;
 		this.mainTailVY = 0;
@@ -45,6 +48,53 @@ class Canvas extends CanvasOption {
 		this.tailParticles = [];
 
 		this.pm = new ParticleManager(this.ctx, this.isSmallScreen);
+	}
+
+	/**
+	 * @param {number} fontSize
+	 * @returns {number} 사용자가 입력한 문자열의 width를 반환
+	 */
+	getTextWidth(fontSize) {
+		this.ctx.font = this.setFontStyle(fontSize);
+		return this.ctx.measureText(this.text).width;
+	}
+
+	adjustFontSize() {
+		const maxWidth = this.canvasCssWidth * SCREEN.MAX_WIDTH_RATIO;
+		let textWidth = this.getTextWidth(this.mainFontSize);
+
+		if (textWidth < maxWidth) return;
+
+		const minFontSize = this.mainFontSize * FONT.MIN_SIZE_RATIO;
+		let tempSize = this.mainFontSize;
+
+		while (textWidth > maxWidth && tempSize > minFontSize) {
+			tempSize *= FONT.ADJUST_RATIO;
+			textWidth = this.getTextWidth(tempSize);
+		}
+
+		if (tempSize < minFontSize) tempSize = minFontSize;
+
+		this.mainFontSize = this.setMainFontSize(tempSize);
+		this.subFontSize = this.setSubFontSize();
+	}
+
+	/**
+	 * @param {number} fontSize
+	 * @returns {object} 캔버스에 그려진 텍스트의 픽셀 데이터 반환
+	 */
+	getTextData(fontSize) {
+		const textData = new TextData(this.text, fontSize);
+		textData.drawText();
+
+		return textData.textPixelData;
+	}
+
+	createTextData() {
+		this.adjustFontSize();
+
+		this.mainTextData = this.getTextData(this.mainFontSize);
+		this.subTextData = this.getTextData(this.subFontSize);
 	}
 
 	createTailPosX() {
@@ -137,6 +187,7 @@ class Canvas extends CanvasOption {
 
 	render() {
 		if (this.text !== "") {
+			this.createTextData();
 			this.animateFireworks();
 		}
 	}
