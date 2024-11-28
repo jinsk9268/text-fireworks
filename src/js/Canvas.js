@@ -1,10 +1,10 @@
 import CanvasOption from "@/js/CanvasOption.js";
 import ParticleManager from "@/js/particle/ParticleManager.js";
 import TextData from "@/js/TextData.js";
-import { TAIL, PARTICLE, ANIMATION, SCREEN, FONT } from "@/js/constants.js";
-import { randomInt } from "@/js/utils.js";
+import { TAIL, PARTICLE, ANIMATION, SCREEN, FONT, TEXT } from "@/js/constants.js";
+import { randomInt, setHslaColor } from "@/js/utils.js";
 
-const { TYPE_TAIL } = PARTICLE;
+const { TYPE_TAIL, TYPE_TEXT } = PARTICLE;
 
 class Canvas extends CanvasOption {
 	constructor() {
@@ -46,6 +46,7 @@ class Canvas extends CanvasOption {
 		this.isLeft = false;
 
 		this.tailParticles = [];
+		this.textParticles = [];
 
 		this.pm = new ParticleManager(this.ctx, this.isSmallScreen);
 	}
@@ -90,7 +91,7 @@ class Canvas extends CanvasOption {
 		return textData.textPixelData;
 	}
 
-	createTextData() {
+	createTextDatas() {
 		this.adjustFontSize();
 
 		this.mainTextData = this.getTextData(this.mainFontSize);
@@ -149,9 +150,70 @@ class Canvas extends CanvasOption {
 			tail.update();
 			tail.draw();
 
-			if (tail.opacity <= TAIL.OPACITY_LIMIT) {
+			if (tail.belowOpacityLimit(TAIL.OPACITY_LIMIT)) {
+				this.createTextParticle(tail.x, tail.y);
+
 				this.tailParticles.splice(i, 1);
 				this.pm.returnToPool(TYPE_TAIL, tail);
+			}
+		}
+	}
+
+	/**
+	 * @param {number} x
+	 * @returns x좌표가 메인 위치에 있으면 true 반환, 그 외의 영역은 false 반환
+	 */
+	isMain(x) {
+		return x > this.tailsLeftPosX.at(-1) && x < this.tailsRightPosX.at(0);
+	}
+
+	/**
+	 * @param {object} params
+	 * @param {number} params.stringCenterX 문자열 중심의 x좌표 (물리적 크기)
+	 * @param {number} params.stringCenterY 문자열 중심의 y좌표 (물리적 크기)
+	 * @param {number} params.w 픽셀 데이터의 현재 가로 위치 (물리적 크기)
+	 * @param {number} params.h 필셀 데이터의 현재 세로 위치 (물리적 크기)
+	 * @param {number} params.x 꼬리의 x좌표 (css 크기)
+	 * @param {number} params.y 꼬리의 y좌표 (css 크기)
+	 * @returns {object} TextParticle x,y 좌표의 초기 속도 반환
+	 */
+	calculateTextParticleVelocity({ stringCenterX, stringCenterY, w, h, x, y }) {
+		const targetX = (stringCenterX + w) / this.dpr;
+		const targetY = (stringCenterY + h) / this.dpr;
+
+		return { vx: (targetX - x) / this.interval, vy: (targetY - y) / this.interval };
+	}
+
+	createTextParticle(x, y) {
+		const { data, width, height, fontBoundingBoxAscent, fontBoundingBoxDescent } = this.isMain(x) ? this.mainTextData : this.subTextData;
+		const stringCenterX = x * this.dpr - width / 2;
+		const stringCenterY = y * this.dpr - (height + fontBoundingBoxAscent + fontBoundingBoxDescent) / 2;
+
+		const particleFrequency = this.isSmallScreen ? TEXT.SMALL_FREQUENCY : TEXT.GENERAL_FREQUENCY;
+		for (let h = 0; h < height; h += particleFrequency) {
+			for (let w = 0; w < width; w += particleFrequency) {
+				const index = (h * width + w) * 4;
+				const alpha = data[index + 3];
+
+				if (alpha > 0) {
+					const { vx, vy } = this.calculateTextParticleVelocity({ stringCenterX, stringCenterY, w, h, x, y });
+					const params = { x, y, vx, vy, color: setHslaColor({ hue: randomInt(TEXT.MIN_HUE, TEXT.MAX_HUE) }) };
+
+					this.textParticles.push(this.pm.acquireParticle(TYPE_TEXT, params));
+				}
+			}
+		}
+	}
+
+	updateTextParticle() {
+		for (let i = this.textParticles.length - 1; i >= 0; i--) {
+			const text = this.textParticles[i];
+			text.update(this.textLength);
+			text.draw();
+
+			if (text.belowOpacityLimit() || this.isOutOfCanvasArea(text)) {
+				this.textParticles.splice(i, 1);
+				this.pm.returnToPool(TYPE_TEXT, text);
 			}
 		}
 	}
@@ -175,6 +237,7 @@ class Canvas extends CanvasOption {
 				if (frameCount === 0) this.createTailParticle();
 
 				this.updateTailParticle();
+				this.updateTextParticle();
 
 				then = now - (delta % this.interval);
 			}
@@ -187,7 +250,7 @@ class Canvas extends CanvasOption {
 
 	render() {
 		if (this.text !== "") {
-			this.createTextData();
+			this.createTextDatas();
 			this.animateFireworks();
 		}
 	}

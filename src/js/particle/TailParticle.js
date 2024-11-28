@@ -20,6 +20,7 @@ class TailParticle extends Particle {
 	}
 
 	initTailParticleVars() {
+		this.initialX = this.x;
 		this.radian = TAIL.RADIAN;
 	}
 
@@ -31,6 +32,7 @@ class TailParticle extends Particle {
 		this.radian += TAIL.RADIAN_OFFSET;
 
 		this.updatePosition();
+		this.x += (this.initialX - this.x) * TAIL.INITIAL_X_RETURN_RATE;
 	}
 
 	/**

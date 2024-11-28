@@ -78,6 +78,14 @@ class Particle {
 
 		this.initParticleVars(params);
 	}
+
+	/**
+	 * @param {number} [opacityLimit]
+	 * @returns 파티클의 투명도가 제한 기준 이하면 true를 반환, 초과면 false를 반환
+	 */
+	belowOpacityLimit(opacityLimit = 0) {
+		return this.opacity <= opacityLimit;
+	}
 }
 
 export default Particle;

@@ -32,6 +32,8 @@ class TextData extends CanvasOption {
 
 		if (width) {
 			this.textPixelData = this.ctx.getImageData(x, y, imgWidth, imgHeight);
+			this.textPixelData.fontBoundingBoxAscent = fontBoundingBoxAscent;
+			this.textPixelData.fontBoundingBoxDescent = fontBoundingBoxDescent;
 		}
 	}
 }

@@ -1,4 +1,5 @@
 import { ANIMATION, SCREEN, POS, FONT } from "@/js/constants.js";
+import Particle from "@/js/particle/Particle.js";
 
 class CanvasOption {
 	/**
@@ -22,11 +23,11 @@ class CanvasOption {
 	}
 
 	initCanvasOptionVars() {
-		this.dpr = Math.min(window.devicePixelRatio, SCREEN.MAX_DPR) || 1;
+		this.dpr = Math.min(Math.round(window.devicePixelRatio), SCREEN.MAX_DPR) || 1;
 		this.canvasCssWidth = window.innerWidth;
 		this.canvasCssHeight = window.innerHeight;
-		this.isSmallScreen = window.matchMedia(`max-width: ${SCREEN.SMALL_WIDTH}px`).matches;
-		this.mainX = this.canvasCssWidth / 2;
+		this.isSmallScreen = window.matchMedia(`(max-width: ${SCREEN.SMALL_WIDTH}px)`).matches;
+		this.mainX = this.canvasCssWidth / POS.MAIN_X_DIVISOR;
 		this.mainY = Math.floor(this.canvasCssHeight * POS.MAIN_Y_RATIO);
 		this.mainFontSize = this.setMainFontSize();
 		this.subFontSize = this.setSubFontSize();
@@ -66,6 +67,14 @@ class CanvasOption {
 	fillFullCanvas(color) {
 		this.ctx.fillStyle = color;
 		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+	}
+
+	/**
+	 * @param {Particle} particle TailParticle, SparkParticle, TextParticle, CircleParticle
+	 * @returns 파티클이 캔버스 영역을 벗어날 경우 true를 반환, 영역안이면 false를 반환
+	 */
+	isOutOfCanvasArea(particle) {
+		return particle.x < 0 || particle.x > this.canvasCssWidth || particle.y < 0 || particle.y > this.canvasCssHeight;
 	}
 }
 

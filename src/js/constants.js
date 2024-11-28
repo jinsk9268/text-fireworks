@@ -18,6 +18,7 @@ export const SCREEN = {
 };
 
 export const POS = {
+	MAIN_X_DIVISOR: 2,
 	MAIN_Y_RATIO: 0.1,
 };
 
@@ -30,7 +31,7 @@ export const FONT = {
 	TEXT_BASELINE: "middle",
 	TEXT_COLOR: "black",
 	ADJUST_RATIO: 0.95,
-	MIN_SIZE_RATIO: 0.7,
+	MIN_SIZE_RATIO: 0.4,
 };
 
 export const PARTICLE = {
@@ -66,5 +67,15 @@ export const TAIL = {
 	DEFAULT_RGB: "255, 255, 210",
 	RADIAN: 0,
 	RADIAN_OFFSET: 1,
-	X_ADJUST_RATE: 0.8,
+	X_ADJUST_RATE: 0.4,
+	INITIAL_X_RETURN_RATE: 0.1,
+};
+
+export const TEXT = {
+	GRAVITY: 0.015,
+	OPACITY_OFFSET: 0.01,
+	SMALL_FREQUENCY: 3,
+	GENERAL_FREQUENCY: 2,
+	MIN_HUE: 50,
+	MAX_HUE: 60,
 };
