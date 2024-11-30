@@ -73,9 +73,8 @@ class Particle {
 	 * 파티클 공통 멤버변수 초기화 및 재사용을 위한 리셋
 	 * @param {object} [params]
 	 */
-	reset(params) {
-		if (!params) params = this.initialState;
-
+	reset(params = {}) {
+		for (const key in this.initialState) params[key] = this.initialState[key];
 		this.initParticleVars(params);
 	}
 

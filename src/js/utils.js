@@ -7,7 +7,7 @@ import { PARTICLE } from "@/js/constants.js";
  * @returns {number} min과 max 사이의 소수점 decimal(기본값:2)자리의 랜덤한 소수 반환
  */
 export function randomFloat(min, max, decimal = 2) {
-	return parseFloat(Math.random() * (max - min) + min).toFixed(decimal);
+	return parseFloat((Math.random() * (max - min) + min).toFixed(decimal));
 }
 
 /**
@@ -43,4 +43,12 @@ export function setHslaColor(params = {}) {
 	} = params;
 
 	return `hsla(${hue}, ${saturation}%, ${lightness}%)`;
+}
+
+/**
+ * @param {number} num
+ * @returns {boolean} 짝수면 true 반환, 홀수면 false 반환
+ */
+export function isEven(num) {
+	return num % 2 === 0;
 }
