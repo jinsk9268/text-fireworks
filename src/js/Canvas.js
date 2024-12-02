@@ -27,6 +27,8 @@ class Canvas extends CanvasOption {
 		this.createTailVY();
 
 		this.pm.isSmallScreen = this.isSmallScreen;
+		this.pm.maxPoolSize[TYPE_TEXT] *= this.textLength;
+		this.pm.maxPoolSize[TYPE_SPARK] *= this.textLength;
 	}
 
 	initCanvasVars() {
