@@ -1,5 +1,5 @@
 import Canvas from "@/js/Canvas.js";
-import { LOCATION_HASH } from "@/js/constants.js";
+import { LOCATION_HASH, SCREEN } from "@/js/constants.js";
 
 const canvas = new Canvas();
 
@@ -28,6 +28,17 @@ window.addEventListener("load", () => {
 	if (isHashFireworks()) {
 		location.hash = "";
 	}
+});
+
+let resizeTimeout;
+window.addEventListener("resize", () => {
+	clearTimeout(resizeTimeout);
+	resizeTimeout = setTimeout(() => {
+		if (isHashFireworks()) {
+			canvas.init();
+			canvas.createTextDatas();
+		}
+	}, SCREEN.RESIZE_DELAY);
 });
 
 domElements.inputForm.addEventListener("submit", (e) => {

@@ -12,6 +12,7 @@ export const ANIMATION = {
 };
 
 export const SCREEN = {
+	RESIZE_DELAY: 200,
 	MAX_DPR: 3,
 	SMALL_WIDTH: 480,
 	MAX_WIDTH_RATIO: 0.9,
