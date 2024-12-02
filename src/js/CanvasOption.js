@@ -1,5 +1,4 @@
 import { ANIMATION, SCREEN, POS, FONT } from "@/js/constants.js";
-import Particle from "@/js/particle/Particle.js";
 
 class CanvasOption {
 	/**
@@ -70,11 +69,12 @@ class CanvasOption {
 	}
 
 	/**
-	 * @param {Particle} particle TailParticle, SparkParticle, TextParticle, CircleParticle
+	 * @param {number} x
+	 * @param {number} y
 	 * @returns 파티클이 캔버스 영역을 벗어날 경우 true를 반환, 영역안이면 false를 반환
 	 */
-	isOutOfCanvasArea(particle) {
-		return particle.x < 0 || particle.x > this.canvasCssWidth || particle.y < 0 || particle.y > this.canvasCssHeight;
+	isOutOfCanvasArea(x, y) {
+		return x < 0 || x > this.canvasCssWidth || y < 0 || y > this.canvasCssHeight;
 	}
 }
 

@@ -1,10 +1,10 @@
 import CanvasOption from "@/js/CanvasOption.js";
 import ParticleManager from "@/js/particle/ParticleManager.js";
 import TextData from "@/js/TextData.js";
-import { TAIL, PARTICLE, ANIMATION, SCREEN, FONT, TEXT, CIRCLE } from "@/js/constants.js";
-import { randomInt, setHslaColor, isEven } from "@/js/utils.js";
+import { TAIL, PARTICLE, ANIMATION, SCREEN, FONT, TEXT, CIRCLE, SPARK } from "@/js/constants.js";
+import { randomInt, setHslaColor, isEven, randomFloat, setRgbaColor } from "@/js/utils.js";
 
-const { TYPE_TAIL, TYPE_TEXT, TYPE_CIRCLE } = PARTICLE;
+const { TYPE_TAIL, TYPE_TEXT, TYPE_CIRCLE, TYPE_SPARK } = PARTICLE;
 
 class Canvas extends CanvasOption {
 	constructor() {
@@ -48,6 +48,7 @@ class Canvas extends CanvasOption {
 		this.tailParticles = [];
 		this.textParticles = [];
 		this.circleParticles = [];
+		this.sparkParticles = [];
 
 		this.pm = new ParticleManager(this.ctx, this.isSmallScreen);
 	}
@@ -151,6 +152,19 @@ class Canvas extends CanvasOption {
 			tail.update();
 			tail.draw();
 
+			const sparkQty = Math.round(Math.abs(tail.vy * SPARK.TAIL_CREATION_RATE));
+			for (let i = 0; i < sparkQty; i++) {
+				const sparkParams = {
+					x: tail.x,
+					y: tail.y,
+					vx: randomFloat(SPARK.TAIL_MIN_VX, SPARK.TAIL_MAX_VX),
+					vy: randomFloat(SPARK.TAIL_MIN_VY, SPARK.TAIL_MAX_VY),
+					opacity: randomFloat(SPARK.TAIL_MIN_OPACITY, SPARK.TAIL_MAX_OPACITY),
+					color: tail.fillColor,
+				};
+				this.sparkParticles.push(this.pm.acquireParticle(TYPE_SPARK, sparkParams));
+			}
+
 			if (tail.belowOpacityLimit(TAIL.OPACITY_LIMIT)) {
 				this.createTextParticle(tail.x, tail.y);
 				this.createCircleParticle(tail.x, tail.y);
@@ -213,7 +227,7 @@ class Canvas extends CanvasOption {
 			text.update(this.textLength);
 			text.draw();
 
-			if (text.belowOpacityLimit() || this.isOutOfCanvasArea(text)) {
+			if (text.belowOpacityLimit() || this.isOutOfCanvasArea(text.x, text.y)) {
 				this.textParticles.splice(i, 1);
 				this.pm.returnToPool(TYPE_TEXT, text);
 			}
@@ -296,9 +310,35 @@ class Canvas extends CanvasOption {
 			circle.update();
 			circle.draw();
 
-			if (circle.belowOpacityLimit() || this.isOutOfCanvasArea(circle)) {
+			if (Math.random() < SPARK.CIRCLE_CREATION_RATE * this.textLength) {
+				const sparkParams = {
+					x: circle.x,
+					y: circle.y,
+					vx: randomFloat(SPARK.CIRCLE_MIN_VX, SPARK.CIRCLE_MAX_VX),
+					vy: SPARK.CIRCLE_VY,
+					color: circle.fillColor,
+					radius: circle.radius,
+					opacity: circle.opacity + SPARK.CIRCLE_OPACITY_OFFSET,
+				};
+				this.sparkParticles.push(this.pm.acquireParticle(TYPE_SPARK, sparkParams));
+			}
+
+			if (circle.belowOpacityLimit() || this.isOutOfCanvasArea(circle.x, circle.y)) {
 				this.circleParticles.splice(i, 1);
 				this.pm.returnToPool(TYPE_CIRCLE, circle);
+			}
+		}
+	}
+
+	updateSparkParticle() {
+		for (let i = this.sparkParticles.length - 1; i >= 0; i--) {
+			const spark = this.sparkParticles[i];
+			spark.update();
+			spark.draw();
+
+			if (spark.belowOpacityLimit() || this.isOutOfCanvasArea(spark.x, spark.y)) {
+				this.sparkParticles.splice(i, 1);
+				this.pm.returnToPool(TYPE_SPARK, spark);
 			}
 		}
 	}
@@ -306,6 +346,8 @@ class Canvas extends CanvasOption {
 	animateFireworks() {
 		let then = document.timeline.currentTime;
 		let frameCount = 0;
+		const bgCleanUp = setRgbaColor(SCREEN.BG_RGB, SCREEN.ALPHA_CLEANUP);
+		const addFrameCountDivisor = ANIMATION.TAIL_FPS + this.textLength * ANIMATION.TEXT_LEN_MULTIPLIER;
 
 		/**
 		 * requestAnimationFrame에 전달할 콜백 함수
@@ -313,18 +355,22 @@ class Canvas extends CanvasOption {
 		 */
 		const frame = (now) => {
 			const delta = now - then;
-			frameCount = (frameCount + 1) % ANIMATION.TAIL_FPS;
 
 			if (delta >= this.interval) {
-				// TODO: 애니메이션 코드 업데이트
-				this.fillFullCanvas(SCREEN.BG_RGBA);
+				const alpha = SCREEN.ALPHA_BASE + SCREEN.ALPHA_OFFSET * Math.sin(frameCount / SCREEN.SPEED_CONTROL);
+				this.fillFullCanvas(setRgbaColor(SCREEN.BG_RGB, alpha));
 
-				if (frameCount === 0) this.createTailParticle();
+				if (frameCount === 0) {
+					this.fillFullCanvas(bgCleanUp);
+					this.createTailParticle();
+				}
 
 				this.updateTailParticle();
-				this.updateTextParticle();
 				this.updateCircleParticle();
+				this.updateTextParticle();
+				this.updateSparkParticle();
 
+				frameCount = (frameCount + 1) % addFrameCountDivisor;
 				then = now - (delta % this.interval);
 			}
 
