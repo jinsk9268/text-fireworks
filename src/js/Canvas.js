@@ -7,6 +7,11 @@ import { randomInt, setHslaColor, isEven, randomFloat, setRgbaColor } from "@/js
 const { TYPE_TAIL, TYPE_TEXT, TYPE_CIRCLE, TYPE_SPARK } = PARTICLE;
 
 class Canvas extends CanvasOption {
+	/**
+	 * 애니메이션을 실행할 캔버스 클래스
+	 * - 화면에 불꽃놀이와 텍스트 파티클을 그리기 위한 기능을 제공
+	 * - CanvasOption을 확장하여 캔버스의 다양한 설정을 관리
+	 */
 	constructor() {
 		super();
 		this.initCanvasVars();
@@ -202,6 +207,10 @@ class Canvas extends CanvasOption {
 		return { vx: (targetX - x) / this.interval, vy: (targetY - y) / this.interval };
 	}
 
+	/**
+	 * @param {number} x
+	 * @param {number} y
+	 */
 	createTextParticle(x, y) {
 		const { data, width, height, fontBoundingBoxAscent, fontBoundingBoxDescent } = this.isMain(x) ? this.mainTextData : this.subTextData;
 		const stringCenterX = x * this.dpr - width / 2;
