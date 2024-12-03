@@ -280,7 +280,7 @@ class Canvas extends CanvasOption {
 	createCircleParticle(x, y) {
 		const layerOffset = this.calculateLayerOffset(this.isMain(x) ? this.mainTextData.width : this.subTextData.width);
 		const textLengthOffset = CIRCLE.BASE_TEXT_OFFSET - this.textLength;
-		const baseSpeed = (layerOffset + this.textLength) / this.interval;
+		const baseSpeed = layerOffset / this.interval;
 
 		for (let layerIdx = 0; layerIdx < CIRCLE.LAYERS; layerIdx++) {
 			const speedFactor = baseSpeed + layerIdx;

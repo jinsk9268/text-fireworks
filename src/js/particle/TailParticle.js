@@ -13,10 +13,8 @@ class TailParticle extends Particle {
 	 * @param {number} params.vy
 	 */
 	constructor({ ctx, isSmallScreen, x, y, vy }) {
-		super({ ctx, isSmallScreen, x, y, vy, color: setRgbaColor(TAIL.DEFAULT_RGB) });
+		super({ ctx, isSmallScreen, x, y, vy });
 		this.initTailParticleVars();
-
-		this.initialState = { color: this.fillColor };
 	}
 
 	initTailParticleVars() {
