@@ -1,5 +1,4 @@
 import Particle from "@/js/particle/Particle.js";
-import { setRgbaColor } from "@/js/utils.js";
 import { TAIL } from "@/js/constants.js";
 
 class TailParticle extends Particle {

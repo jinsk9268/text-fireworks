@@ -29,18 +29,22 @@ export const POS = {
 };
 
 export const FONT = {
+	// CanvasOption class
 	MAIN_RATIO_GENERAL: 0.09,
 	MAIN_RATIO_SMALL: 0.2,
 	SUB_RATIO: 0.85,
+	// TextData class
 	FAMILY: "Do Hyeon",
 	TEXT_ALIGN: "center",
 	TEXT_BASELINE: "middle",
 	TEXT_COLOR: "black",
+	// Canvas class
 	ADJUST_RATIO: 0.95,
 	MIN_SIZE_RATIO: 0.4,
 };
 
 export const PARTICLE = {
+	// ParticleManager class
 	TYPE_TAIL: "tail",
 	TYPE_SPARK: "spark",
 	TYPE_TEXT: "text",
@@ -49,21 +53,23 @@ export const PARTICLE = {
 	SPARK_POOL: 600,
 	TEXT_POOL: 2100,
 	CIRCLE_POOL: 1000,
+	// Particle class
 	RGB: "255, 255, 210",
-	HUE: 20,
-	MIN_SATURATION: 50,
-	MAX_SATURATION: 100,
-	MIN_LIGHTNESS: 50,
-	MAX_LIGHTNESS: 100,
 	MIN_OPACITY: 0.9,
 	MAX_OPACITY: 1,
 	RADIUS: 1,
 	RADIUS_ADJUST_RATIO: 0.8,
 	FRICTION: 0.93,
 	DEGREE_TO_RADIAN: Math.PI / 180,
+	HUE: 20,
+	MIN_SATURATION: 50,
+	MAX_SATURATION: 100,
+	MIN_LIGHTNESS: 50,
+	MAX_LIGHTNESS: 100,
 };
 
 export const TAIL = {
+	// canvas
 	BASE_QTY: 5,
 	SMALL_EXCLUSION: 75,
 	EXCLUSION: 150,
@@ -71,7 +77,7 @@ export const TAIL = {
 	MIN_Y_RATIO: 0.7,
 	MAX_Y_RATIO: 0.3,
 	OPACITY_LIMIT: 0.05,
-	DEFAULT_RGB: "255, 255, 200",
+	// class
 	RADIAN: 0,
 	RADIAN_OFFSET: 1,
 	X_ADJUST_RATE: 0.4,
@@ -79,8 +85,10 @@ export const TAIL = {
 };
 
 export const TEXT = {
+	// class
 	GRAVITY: 0.021,
 	OPACITY_OFFSET: 0.01,
+	// canvas
 	SMALL_FREQUENCY: 3,
 	GENERAL_FREQUENCY: 2,
 	MIN_HUE: 50,
@@ -90,6 +98,7 @@ export const TEXT = {
 const PER_QTY = 60;
 const PER_ANGLE = 360 / PER_QTY;
 export const CIRCLE = {
+	// canvas
 	LAYERS: 7,
 	PER_QTY,
 	PER_ANGLE,
@@ -101,6 +110,7 @@ export const CIRCLE = {
 	HUES: [280, 240, 200, 120, 60, 30, 0],
 	SATURATION: 60,
 	LIGHTNESS: 60,
+	// class
 	FRICTION: 0.94,
 	GRAVITY: 0.018,
 	SHADOW_BLUR: 10,
@@ -110,8 +120,10 @@ export const CIRCLE = {
 };
 
 export const SPARK = {
+	// class
 	OPACITY_ADJUST_RATE: 0.016,
 	RADIUS_ADJUST_RATE: 0.99,
+	// canvas
 	TAIL_CREATION_RATE: 0.35,
 	TAIL_MIN_VX: -0.1,
 	TAIL_MAX_VX: 0.1,
