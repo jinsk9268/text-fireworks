@@ -47,8 +47,15 @@ describe("utils.js 테스트", () => {
 		{ hue: undefined, saturation: undefined, lightness: 100, NOTICE_UNDEFINED },
 		{ hue: 5, saturation: 20, lightness: 100, NOTICE_UNDEFINED },
 	])("setHslaColor 테스트 (hue: $hue, saturation: $saturation, lightness: $lightness) $NOTICE_UNDEFINED", ({ hue, saturation, lightness }) => {
-		const result = setHslaColor({ hue, lightness, saturation });
+		const result = setHslaColor({ hue, saturation, lightness });
+
 		const expectResult = new RegExp(`^hsla\\(${hue ?? PARTICLE.HUE}, ${saturation ?? "\\d{1,3}"}%, ${lightness ?? "\\d{1,3}"}%\\)$`);
 		expect(result).toMatch(expectResult);
+
+		const hslArr = result.match(/\d+/g).map((value) => parseInt(value, 10));
+		const hslObj = { h: hslArr[0], s: hslArr[1], l: hslArr[2] };
+		if (hue !== undefined) expect(hslObj.h).toBe(hue);
+		if (saturation !== undefined) expect(hslObj.s).toBe(saturation);
+		if (lightness !== undefined) expect(hslObj.l).toBe(lightness);
 	});
 });
