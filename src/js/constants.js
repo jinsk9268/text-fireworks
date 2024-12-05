@@ -1,3 +1,4 @@
+/** 프로젝트 */
 const FIREWORKS = "fireworks";
 export const LOCATION_HASH = {
 	HOME: "home",
@@ -136,4 +137,13 @@ export const SPARK = {
 	CIRCLE_MAX_VX: 0.08,
 	CIRCLE_VY: 0.1,
 	CIRCLE_OPACITY_OFFSET: 0.1,
+};
+
+/** 테스트 */
+export const TEST_OPTION = {
+	TYPE_INNER_WIDTH: "innerWidth",
+	TYPE_INNER_HEIGHT: "innerHeight",
+	INNER_WIDTH: 1000,
+	SMALL_INNER_WIDTH: 400,
+	INNER_HEIGHT: 500,
 };
