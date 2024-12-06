@@ -1,3 +1,5 @@
+import { setRgbaColor } from "@/js/utils.js";
+
 /** 프로젝트 */
 const FIREWORKS = "fireworks";
 export const LOCATION_HASH = {
@@ -140,10 +142,21 @@ export const SPARK = {
 };
 
 /** 테스트 */
+const DEFAULT_PARTICLE_COLOR = setRgbaColor(PARTICLE.RGB, PARTICLE.MIN_OPACITY);
 export const TEST_OPTION = {
 	TYPE_INNER_WIDTH: "innerWidth",
 	TYPE_INNER_HEIGHT: "innerHeight",
 	INNER_WIDTH: 1000,
 	SMALL_INNER_WIDTH: 400,
 	INNER_HEIGHT: 500,
+	PARTICLE_DEFAULT_VALUES: {
+		x: 0,
+		y: 0,
+		vx: 0,
+		vy: 0,
+		radius: PARTICLE.RADIUS,
+		opacity: PARTICLE.MIN_OPACITY,
+		friction: PARTICLE.FRICTION,
+		color: DEFAULT_PARTICLE_COLOR,
+	},
 };
