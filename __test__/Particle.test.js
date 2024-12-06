@@ -1,5 +1,6 @@
 import Particle from "@/js/particle/Particle.js";
 import { randomFloat, setRgbaColor } from "@/js/utils";
+import { createMockCanvasCtx, expectAllParticleVars } from "./setup.js";
 import { PARTICLE, TEST_OPTION } from "@/js/constants.js";
 
 jest.mock("@/js/utils", () => ({
@@ -18,26 +19,9 @@ describe("Particle 클래스 테스트", () => {
 	});
 
 	beforeEach(() => {
-		const canvas = document.createElement("canvas");
-		ctx = canvas.getContext("2d");
+		ctx = createMockCanvasCtx();
 		isSmallScreen = false;
 	});
-
-	/**
-	 * 파티클의 멤버 변수값이 예측 결과값과 일치하는지 검증
-	 * @param {Particle} particle
-	 * @param {object} expectedResult
-	 */
-	function expectAllParticleVars(particle, expectedResult) {
-		expect(particle.x).toBe(expectedResult.x);
-		expect(particle.y).toBe(expectedResult.y);
-		expect(particle.vx).toBe(expectedResult.vx);
-		expect(particle.vy).toBe(expectedResult.vy);
-		expect(particle.radius).toBe(expectedResult.radius);
-		expect(particle.opacity).toBe(expectedResult.opacity);
-		expect(particle.friction).toBe(expectedResult.friction);
-		expect(particle.fillColor).toBe(expectedResult.color);
-	}
 
 	test.each([
 		{ params: {}, notice: "기본값" },
