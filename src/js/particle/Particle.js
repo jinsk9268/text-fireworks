@@ -40,7 +40,7 @@ class Particle {
 		this.y = y;
 		this.vx = vx;
 		this.vy = vy;
-		this.radius = this.isSmallScreen ? radius * PARTICLE.RADIUS_ADJUST_RATIO : radius;
+		this.radius = Math.max(radius, 0) * (this.isSmallScreen ? PARTICLE.RADIUS_ADJUST_RATIO : 1);
 		this.opacity = opacity;
 		this.friction = friction;
 		this.fillColor = color;
