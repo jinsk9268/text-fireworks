@@ -66,18 +66,11 @@ describe("Particle 클래스 테스트", () => {
 
 		particle.draw();
 
-		expect(particle.ctx.beginPath).toHaveBeenCalled();
 		expect(particle.ctx.beginPath).toHaveBeenCalledTimes(1);
-
 		expect(particle.ctx.fillStyle).toBe(particle.fillColor);
-
 		expect(particle.ctx.arc).toHaveBeenCalledWith(x, y, radius, 0, Math.PI * 2);
 		expect(particle.ctx.arc).toHaveBeenCalledTimes(1);
-
-		expect(particle.ctx.fill).toHaveBeenCalled();
 		expect(particle.ctx.fill).toHaveBeenCalledTimes(1);
-
-		expect(particle.ctx.closePath).toHaveBeenCalled();
 		expect(particle.ctx.closePath).toHaveBeenCalledTimes(1);
 	});
 
@@ -99,6 +92,18 @@ describe("Particle 클래스 테스트", () => {
 
 		expect(particle.x).toBe(x + vx);
 		expect(particle.y).toBe(y + vy);
+	});
+
+	test("Particle update 테스트 (통합)", () => {
+		const particle = new Particle({ ctx, isSmallScreen, x: 1, y: 1, vx: 10, vy: 10 });
+
+		jest.spyOn(particle, "updateVelocity");
+		jest.spyOn(particle, "updatePosition");
+
+		particle.update();
+
+		expect(particle.updateVelocity).toHaveBeenCalledTimes(1);
+		expect(particle.updatePosition).toHaveBeenCalledTimes(1);
 	});
 
 	test.each([
