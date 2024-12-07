@@ -1,12 +1,16 @@
 import Particle from "@/js/particle/Particle.js";
-import { randomFloat, setRgbaColor } from "@/js/utils";
+import { randomFloat, setRgbaColor, isUndefined } from "@/js/utils";
 import { createMockCanvasCtx, expectAllParticleVars } from "./setup.js";
 import { PARTICLE, TEST_OPTION } from "@/js/constants.js";
 
-jest.mock("@/js/utils", () => ({
-	randomFloat: jest.fn(),
-	setRgbaColor: jest.fn(),
-}));
+jest.mock("@/js/utils", () => {
+	const { isUndefined } = jest.requireActual("@/js/utils");
+	return {
+		isUndefined,
+		randomFloat: jest.fn(),
+		setRgbaColor: jest.fn(),
+	};
+});
 
 describe("Particle 클래스 테스트", () => {
 	let ctx;
@@ -36,6 +40,8 @@ describe("Particle 클래스 테스트", () => {
 		const expectedResult = { ...PARTICLE_DEFAULT_VALUES, ...params };
 
 		expectAllParticleVars(particle, expectedResult);
+		if (isUndefined(params.opacity)) expect(randomFloat).toHaveBeenCalled();
+		if (isUndefined(params.color)) expect(setRgbaColor).toHaveBeenCalled();
 	});
 
 	test("Particle 생성자와 멤버변수 초기화 (모바일 화면 | 기본값 + 커스텀값)", () => {

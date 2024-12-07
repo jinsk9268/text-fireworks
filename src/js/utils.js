@@ -52,3 +52,11 @@ export function setHslaColor(params = {}) {
 export function isEven(num) {
 	return num % 2 === 0;
 }
+
+/**
+ * @param {number | string | boolean | undefined} value
+ * @returns 파라미터 값이 undefined면 true 반환, 아니면 false 반환
+ */
+export function isUndefined(value) {
+	return value === undefined;
+}
