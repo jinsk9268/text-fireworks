@@ -1,4 +1,5 @@
 import TailParticle from "@/js/particle/TailParticle.js";
+import Particle from "@/js/particle/Particle.js";
 import { createMockCanvasCtx, expectAllParticleVars } from "./setup.js";
 import { randomFloat, setRgbaColor } from "@/js/utils.js";
 import { TAIL, TEST_OPTION } from "@/js/constants.js";
@@ -49,19 +50,19 @@ describe("TailParticle 클래스 단위 테스트", () => {
 	});
 
 	test("TailParticle draw 테스트", () => {
-		const tail = new TailParticle({ ctx, isSmallScreen, x: 10, y: 5, vy: 2 });
+		jest.spyOn(Particle.prototype, "draw");
 
-		jest.spyOn(tail, "draw");
+		const tail = new TailParticle({ ctx, isSmallScreen, x: 10, y: 5, vy: 2 });
 		tail.draw();
 
-		expect(tail.draw).toHaveBeenCalledTimes(1);
+		expect(Particle.prototype.draw).toHaveBeenCalledTimes(1);
 	});
 
 	test("TailParticle update 테스트", () => {
 		const [x, y, vy] = [10, 10, 1];
 		const tail = new TailParticle({ ctx, isSmallScreen, x, y, vy });
 
-		jest.spyOn(tail, "update");
+		jest.spyOn(Particle.prototype, "updatePosition");
 		tail.update();
 
 		const expectedVY = vy * PARTICLE_DEFAULT_VALUES.friction;
@@ -77,14 +78,14 @@ describe("TailParticle 클래스 단위 테스트", () => {
 		};
 		expectAllTailVars(tail, expectedResult, x, TAIL.RADIAN + TAIL.RADIAN_OFFSET);
 
-		expect(tail.update).toHaveBeenCalledTimes(1);
+		expect(Particle.prototype.updatePosition).toHaveBeenCalledTimes(1);
 		expect(randomFloat).toHaveBeenCalled();
 		expect(setRgbaColor).toHaveBeenCalled();
 	});
 
 	test("TailParticle reset 테스트 - 사용된 파티클 풀에 반환시 초기화", () => {
 		const tail = new TailParticle({ ctx, isSmallScreen, x: 3, y: 5, vy: 1 });
-		jest.spyOn(tail, "reset");
+		jest.spyOn(Particle.prototype, "reset");
 		jest.spyOn(tail, "initTailParticleVars");
 		tail.update();
 
@@ -92,7 +93,7 @@ describe("TailParticle 클래스 단위 테스트", () => {
 
 		expectAllTailVars(tail, PARTICLE_DEFAULT_VALUES, 0, TAIL.RADIAN);
 
-		expect(tail.reset).toHaveBeenCalledTimes(1);
+		expect(Particle.prototype.reset).toHaveBeenCalledTimes(1);
 		expect(randomFloat).toHaveBeenCalled();
 		expect(setRgbaColor).toHaveBeenCalled();
 		expect(tail.initTailParticleVars).toHaveBeenCalledTimes(1);
