@@ -26,7 +26,7 @@ describe("CircleParticle 단위 테스트", () => {
 	function expectAllCircleVars(circle, expectedresult) {
 		expectAllParticleVars(circle, expectedresult);
 		expect(circle.gravity).toBe(CIRCLE.GRAVITY);
-		expect(JSON.stringify(circle.initialState)).toBe(JSON.stringify({ friction: CIRCLE.FRICTION }));
+		expect(circle.initialState).toEqual({ friction: CIRCLE.FRICTION });
 	}
 
 	test("CirCleParticle 생성자와 멤버변수 테스트", () => {
