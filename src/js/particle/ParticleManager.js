@@ -5,7 +5,7 @@ import TextParticle from "@/js/particle/TextParticle.js";
 import CircleParticle from "@/js/particle/CircleParticle.js";
 
 const { TYPE_TAIL, TYPE_SPARK, TYPE_TEXT, TYPE_CIRCLE, TAIL_POOL, SPARK_POOL, TEXT_POOL, CIRCLE_POOL } = PARTICLE;
-const PARTICLE_MAP = {
+export const PARTICLE_MAP = {
 	[TYPE_TAIL]: TailParticle,
 	[TYPE_SPARK]: SparkParticle,
 	[TYPE_TEXT]: TextParticle,
