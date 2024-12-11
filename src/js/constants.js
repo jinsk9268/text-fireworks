@@ -40,7 +40,7 @@ export const FONT = {
 	FAMILY: "Do Hyeon",
 	TEXT_ALIGN: "center",
 	TEXT_BASELINE: "middle",
-	TEXT_COLOR: "black",
+	TEXT_COLOR: "#000000",
 	// Canvas class
 	ADJUST_RATIO: 0.95,
 	MIN_SIZE_RATIO: 0.4,
