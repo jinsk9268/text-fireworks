@@ -1,7 +1,7 @@
 import ParticleManager, { PARTICLE_MAP } from "@/js/particle/ParticleManager.js";
 import Particle from "@/js/particle/Particle.js";
 import { PARTICLE, TEST_OPTION, TAIL, TEXT, CIRCLE } from "@/js/constants.js";
-import { createMockCanvasCtx, expectAllParticleVars } from "./setup.js";
+import { createMockCanvasCtx, expectAllParticleVars } from "../setup.js";
 import { randomFloat, setRgbaColor, isUndefined } from "@/js/utils.js";
 
 jest.mock("@/js/utils", () => {
@@ -17,10 +17,8 @@ describe("ParticleManager 단위 테스트", () => {
 	let ctx;
 	let isSmallScreen = false;
 	let particleManager;
-
 	const { PARTICLE_DEFAULT_VALUES } = TEST_OPTION;
 	const { TYPE_TAIL, TYPE_SPARK, TYPE_TEXT, TYPE_CIRCLE, TAIL_POOL, SPARK_POOL, TEXT_POOL, CIRCLE_POOL } = PARTICLE;
-
 	const data = [
 		{
 			type: TYPE_TAIL,
@@ -42,6 +40,8 @@ describe("ParticleManager 단위 테스트", () => {
 		{ type: TYPE_SPARK, params: { x: 300, y: 1000, vx: 20, vy: -30, radius: 2, opacity: 0.78, color: "hsla(270, 50%, 50%)" } },
 	];
 
+	let spyPartricleReset;
+
 	beforeAll(() => {
 		randomFloat.mockReturnValue(PARTICLE_DEFAULT_VALUES.opacity);
 		setRgbaColor.mockReturnValue(PARTICLE_DEFAULT_VALUES.color);
@@ -51,8 +51,11 @@ describe("ParticleManager 단위 테스트", () => {
 		ctx = createMockCanvasCtx();
 		particleManager = new ParticleManager(ctx, isSmallScreen);
 
-		const resetSpy = jest.spyOn(Particle.prototype, "reset");
-		resetSpy.mockClear();
+		spyPartricleReset = jest.spyOn(Particle.prototype, "reset");
+	});
+
+	afterEach(() => {
+		spyPartricleReset.mockClear();
 	});
 
 	/**
@@ -114,7 +117,7 @@ describe("ParticleManager 단위 테스트", () => {
 				initialState,
 			});
 
-			expect(Particle.prototype.reset).not.toHaveBeenCalled();
+			expect(spyPartricleReset).not.toHaveBeenCalled();
 		});
 
 		test.each(data)("풀에 파티클이 존재함 | 전달된 인자로 재사용 초기화 후 $type 반환", ({ type, params, originVars, initialState }) => {
@@ -128,7 +131,7 @@ describe("ParticleManager 단위 테스트", () => {
 				initialState,
 			});
 
-			expect(Particle.prototype.reset).toHaveBeenCalledTimes(1);
+			expect(spyPartricleReset).toHaveBeenCalledTimes(1);
 		});
 	});
 
@@ -147,9 +150,9 @@ describe("ParticleManager 단위 테스트", () => {
 					originVars: resetOriginVars ?? originVars,
 					initialState,
 				});
-				expect(Particle.prototype.reset).toHaveBeenCalledTimes(1);
-
 				expect(particleManager.pool[type].length).toBe(1);
+
+				expect(spyPartricleReset).toHaveBeenCalledTimes(1);
 			},
 		);
 
@@ -162,7 +165,7 @@ describe("ParticleManager 단위 테스트", () => {
 			particleManager.returnToPool(type, returnedParticle);
 
 			expect(particleManager.pool[type]).toHaveLength(1);
-			expect(Particle.prototype.reset).not.toHaveBeenCalled();
+			expect(spyPartricleReset).not.toHaveBeenCalled();
 		});
 	});
 });

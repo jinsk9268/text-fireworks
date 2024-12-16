@@ -2,7 +2,7 @@ import Particle from "@/js/particle/Particle.js";
 import SparkParticle from "@/js/particle/SparkParticle.js";
 import { randomFloat, setRgbaColor } from "@/js/utils.js";
 import { SPARK, TEST_OPTION } from "@/js/constants.js";
-import { createMockCanvasCtx, expectAllParticleVars } from "./setup.js";
+import { createMockCanvasCtx, expectAllParticleVars } from "../setup.js";
 
 jest.mock("@/js/utils.js", () => ({
 	randomFloat: jest.fn(),
@@ -31,21 +31,19 @@ describe("SparkParticle 클래스 단위 테스트", () => {
 	});
 
 	test("SparkParticle draw 테스트", () => {
-		jest.spyOn(Particle.prototype, "draw");
-
 		const spark = new SparkParticle({ ctx, isSmallScreen, x: 10, y: 10, vx: -1.25, vy: 1.25 });
-
+		const spyParticleDraw = jest.spyOn(Particle.prototype, "draw");
 		spark.draw();
 
-		expect(Particle.prototype.draw).toHaveBeenCalled();
+		expect(spyParticleDraw).toHaveBeenCalled();
+
+		spyParticleDraw.mockClear();
 	});
 
 	test("SparkParticle update 테스트", () => {
-		jest.spyOn(Particle.prototype, "updatePosition");
-
 		const [x, y, vx, vy, radius, opacity] = [20, 20, 10, 10, 5, 1];
 		const spark = new SparkParticle({ ctx, isSmallScreen, x, y, vx, vy, radius, opacity });
-
+		const spyParticleUpdatePosition = jest.spyOn(Particle.prototype, "updatePosition");
 		spark.update();
 
 		const expectedResult = {
@@ -58,18 +56,20 @@ describe("SparkParticle 클래스 단위 테스트", () => {
 			opacity: opacity - SPARK.OPACITY_ADJUST_RATE,
 		};
 		expectAllParticleVars(spark, expectedResult);
+		expect(spyParticleUpdatePosition).toHaveBeenCalled();
 
-		expect(Particle.prototype.updatePosition).toHaveBeenCalled();
+		spyParticleUpdatePosition.mockClear();
 	});
 
 	test("SparkParticle reset 테스트 - 사용된 파티클 풀에 반환시 초기화", () => {
-		jest.spyOn(Particle.prototype, "reset");
-
 		const spark = new SparkParticle({ ctx, isSmallScreen, x: 5, y: 3, vx: 2, vy: -2, radius: 3, opacity: 0.2, color: "rgba(255, 0, 0, 0.8)" });
+		const spyParticleReset = jest.spyOn(Particle.prototype, "reset");
 		spark.reset();
 
 		expectAllParticleVars(spark, PARTICLE_DEFAULT_VALUES);
-		expect(Particle.prototype.reset).toHaveBeenCalled;
+		expect(spyParticleReset).toHaveBeenCalled;
+
+		spyParticleReset.mockClear();
 	});
 
 	test("SparkParticle reset 테스트 - 풀에서 꺼내와서 재사용", () => {

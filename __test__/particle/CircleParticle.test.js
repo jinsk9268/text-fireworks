@@ -2,7 +2,7 @@ import Particle from "@/js/particle/Particle.js";
 import CircleParticle from "@/js/particle/CircleParticle.js";
 import { randomFloat, setRgbaColor } from "@/js/utils.js";
 import { CIRCLE, TEST_OPTION } from "@/js/constants.js";
-import { createMockCanvasCtx, expectAllParticleVars } from "./setup";
+import { createMockCanvasCtx, expectAllParticleVars } from "../setup";
 
 jest.mock("@/js/utils.js", () => ({
 	randomFloat: jest.fn(),
@@ -37,24 +37,22 @@ describe("CircleParticle 단위 테스트", () => {
 	});
 
 	test("CircleParticle draw 메서드 테스트", () => {
-		jest.spyOn(Particle.prototype, "draw");
-
 		const color = "hsla(25, 50%, 50%)";
 		const circle = new CircleParticle({ ctx, isSmallScreen, x: 10, y: 10, x: 5, y: 5, radius: 1, opacity: 0.5, color });
-
+		const spyParticleDraw = jest.spyOn(Particle.prototype, "draw");
 		circle.draw();
 
 		expect(circle.ctx.save).toHaveBeenCalledTimes(1);
-		expect(Particle.prototype.draw).toHaveBeenCalled();
+		expect(spyParticleDraw).toHaveBeenCalled();
 		expect(circle.ctx.restore).toHaveBeenCalledTimes(1);
+
+		spyParticleDraw.mockClear();
 	});
 
 	test("CircleParticle update 메서드 테스트", () => {
-		jest.spyOn(Particle.prototype, "update");
-
 		const [x, y, vx, vy, radius, opacity, color] = [10, 10, 1, 1, 10, 0.8, "hsla(15, 50%, 50%)"];
 		const circle = new CircleParticle({ ctx, isSmallScreen, x, y, vx, vy, radius, opacity, color });
-
+		const spyParticleUpdate = jest.spyOn(Particle.prototype, "update");
 		circle.update();
 
 		const expectedVy = (vy + CIRCLE.GRAVITY) * CIRCLE.FRICTION;
@@ -70,12 +68,12 @@ describe("CircleParticle 단위 테스트", () => {
 			friction: CIRCLE.FRICTION,
 		};
 		expectAllCircleVars(circle, expectedResult);
+		expect(spyParticleUpdate).toHaveBeenCalled();
 
-		expect(Particle.prototype.update).toHaveBeenCalled();
+		spyParticleUpdate.mockClear();
 	});
 
 	test("CircleParticle reset 테스트 - 사용된 파티클 풀에 반환시 초기화", () => {
-		jest.spyOn(Particle.prototype, "reset");
 		const circle = new CircleParticle({
 			ctx,
 			isSmallScreen,
@@ -87,20 +85,20 @@ describe("CircleParticle 단위 테스트", () => {
 			opacity: 0.67,
 			color: "rgba(255, 255, 255, 1)",
 		});
-
+		const spyParticleReset = jest.spyOn(Particle.prototype, "reset");
 		circle.reset();
 
 		expectAllCircleVars(circle, { ...PARTICLE_DEFAULT_VALUES, friction: CIRCLE.FRICTION });
+		expect(spyParticleReset).toHaveBeenCalled();
 
-		expect(Particle.prototype.reset).toHaveBeenCalled();
+		spyParticleReset.mockClear();
 	});
 
 	test("CircleParticle reset 테스트 - 풀에서 꺼내와서 재사용", () => {
 		const circle = new CircleParticle({ ctx, isSmallScreen });
-
 		const params = { x: 3, y: 45, vx: -1, vy: 2, radius: 1.5, opacity: 0.78 };
 		circle.reset(params);
 
-		expectAllCircleVars(circle, { ...params, friction: CIRCLE.FRICTION });
+		expectAllCircleVars(circle, { ...PARTICLE_DEFAULT_VALUES, ...params, friction: CIRCLE.FRICTION });
 	});
 });

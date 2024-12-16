@@ -1,6 +1,6 @@
 import Particle from "@/js/particle/Particle.js";
 import { randomFloat, setRgbaColor, isUndefined } from "@/js/utils";
-import { createMockCanvasCtx, expectAllParticleVars } from "./setup.js";
+import { createMockCanvasCtx, expectAllParticleVars } from "../setup.js";
 import { PARTICLE, TEST_OPTION } from "@/js/constants.js";
 
 jest.mock("@/js/utils", () => {
@@ -96,14 +96,16 @@ describe("Particle 클래스 테스트", () => {
 
 	test("Particle update 테스트 (통합)", () => {
 		const particle = new Particle({ ctx, isSmallScreen, x: 1, y: 1, vx: 10, vy: 10 });
-
-		jest.spyOn(particle, "updateVelocity");
-		jest.spyOn(particle, "updatePosition");
+		let spyUpdateVelocity = jest.spyOn(particle, "updateVelocity");
+		let spyUpdatePostion = jest.spyOn(particle, "updatePosition");
 
 		particle.update();
 
-		expect(particle.updateVelocity).toHaveBeenCalledTimes(1);
-		expect(particle.updatePosition).toHaveBeenCalledTimes(1);
+		expect(spyUpdateVelocity).toHaveBeenCalledTimes(1);
+		expect(spyUpdatePostion).toHaveBeenCalledTimes(1);
+
+		spyUpdateVelocity.mockClear();
+		spyUpdatePostion.mockClear();
 	});
 
 	test.each([

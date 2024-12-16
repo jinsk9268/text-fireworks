@@ -1,6 +1,6 @@
 import TailParticle from "@/js/particle/TailParticle.js";
 import Particle from "@/js/particle/Particle.js";
-import { createMockCanvasCtx, expectAllParticleVars } from "./setup.js";
+import { createMockCanvasCtx, expectAllParticleVars } from "../setup.js";
 import { randomFloat, setRgbaColor } from "@/js/utils.js";
 import { TAIL, TEST_OPTION } from "@/js/constants.js";
 
@@ -50,19 +50,21 @@ describe("TailParticle 클래스 단위 테스트", () => {
 	});
 
 	test("TailParticle draw 테스트", () => {
-		jest.spyOn(Particle.prototype, "draw");
-
 		const tail = new TailParticle({ ctx, isSmallScreen, x: 10, y: 5, vy: 2 });
+
+		const spyTailDraw = jest.spyOn(Particle.prototype, "draw");
 		tail.draw();
 
-		expect(Particle.prototype.draw).toHaveBeenCalledTimes(1);
+		expect(spyTailDraw).toHaveBeenCalledTimes(1);
+
+		spyTailDraw.mockClear();
 	});
 
 	test("TailParticle update 테스트", () => {
 		const [x, y, vy] = [10, 10, 1];
 		const tail = new TailParticle({ ctx, isSmallScreen, x, y, vy });
 
-		jest.spyOn(Particle.prototype, "updatePosition");
+		const spyUpdatePosition = jest.spyOn(Particle.prototype, "updatePosition");
 		tail.update();
 
 		const expectedVY = vy * PARTICLE_DEFAULT_VALUES.friction;
@@ -78,25 +80,30 @@ describe("TailParticle 클래스 단위 테스트", () => {
 		};
 		expectAllTailVars(tail, expectedResult, x, TAIL.RADIAN + TAIL.RADIAN_OFFSET);
 
-		expect(Particle.prototype.updatePosition).toHaveBeenCalledTimes(1);
+		expect(spyUpdatePosition).toHaveBeenCalledTimes(1);
 		expect(randomFloat).toHaveBeenCalled();
 		expect(setRgbaColor).toHaveBeenCalled();
+
+		spyUpdatePosition.mockClear();
 	});
 
 	test("TailParticle reset 테스트 - 사용된 파티클 풀에 반환시 초기화", () => {
 		const tail = new TailParticle({ ctx, isSmallScreen, x: 3, y: 5, vy: 1 });
-		jest.spyOn(Particle.prototype, "reset");
-		jest.spyOn(tail, "initTailParticleVars");
+		const spyParticleReset = jest.spyOn(Particle.prototype, "reset");
+		const spyInitTailParticleVars = jest.spyOn(tail, "initTailParticleVars");
 		tail.update();
 
 		tail.reset();
 
 		expectAllTailVars(tail, PARTICLE_DEFAULT_VALUES, 0, TAIL.RADIAN);
 
-		expect(Particle.prototype.reset).toHaveBeenCalledTimes(1);
+		expect(spyParticleReset).toHaveBeenCalledTimes(1);
 		expect(randomFloat).toHaveBeenCalled();
 		expect(setRgbaColor).toHaveBeenCalled();
-		expect(tail.initTailParticleVars).toHaveBeenCalledTimes(1);
+		expect(spyInitTailParticleVars).toHaveBeenCalledTimes(1);
+
+		spyParticleReset.mockClear();
+		spyInitTailParticleVars.mockClear();
 	});
 
 	test("TailParticle reset 테스트 - 풀에서 꺼내와서 재사용", () => {

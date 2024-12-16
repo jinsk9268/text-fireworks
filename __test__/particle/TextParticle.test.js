@@ -2,7 +2,7 @@ import Particle from "@/js/particle/Particle.js";
 import TextParticle from "@/js/particle/TextParticle.js";
 import { randomFloat, setRgbaColor } from "@/js/utils.js";
 import { TEST_OPTION, TEXT } from "@/js/constants.js";
-import { createMockCanvasCtx, expectAllParticleVars } from "./setup.js";
+import { createMockCanvasCtx, expectAllParticleVars } from "../setup.js";
 
 jest.mock("@/js/utils.js", () => ({
 	randomFloat: jest.fn(),
@@ -38,20 +38,19 @@ describe("TextParticle 클래스 단위 테스트", () => {
 	});
 
 	test("TextParticle draw 테스트", () => {
-		jest.spyOn(Particle.prototype, "draw");
-
 		const text = new TextParticle({ ctx, isSmallScreen, x: 1, y: 1, vx: 10, vy: 10, color: "rgba(255, 255, 255, 1)" });
+		const spyParticleDraw = jest.spyOn(Particle.prototype, "draw");
 		text.draw();
 
-		expect(Particle.prototype.draw).toHaveBeenCalledTimes(1);
+		expect(spyParticleDraw).toHaveBeenCalledTimes(1);
+
+		spyParticleDraw.mockClear();
 	});
 
 	test("TextParticle update 테스트", () => {
-		jest.spyOn(Particle.prototype, "update");
-
 		const [x, y, vx, vy, color] = [100, 100, 5, 5, "hsla(40, 50%, 50%)"];
 		const text = new TextParticle({ ctx, isSmallScreen, x, y, vx, vy, color });
-
+		const spyParticleUpdate = jest.spyOn(Particle.prototype, "update");
 		text.update();
 
 		const expectedVx = vx * PARTICLE_DEFAULT_VALUES.friction;
@@ -66,24 +65,24 @@ describe("TextParticle 클래스 단위 테스트", () => {
 			color,
 		};
 		expectAllTextVars(text, expectedResult);
+		expect(spyParticleUpdate).toHaveBeenCalled();
 
-		expect(Particle.prototype.update).toHaveBeenCalled();
+		spyParticleUpdate.mockClear();
 	});
 
 	test("TextParticle reset 테스트 - 사용된 파티클 풀에 반환시 초기화", () => {
-		jest.spyOn(Particle.prototype, "reset");
 		const text = new TextParticle({ ctx, isSmallScreen, x: 23, y: 32, vx: 5, vy: 5, color: "hsla(30, 100%, 100%)" });
-
+		const spyParticleReset = jest.spyOn(Particle.prototype, "reset");
 		text.reset();
 
 		expectAllTextVars(text, PARTICLE_DEFAULT_VALUES);
+		expect(spyParticleReset).toHaveBeenCalled();
 
-		expect(Particle.prototype.reset).toHaveBeenCalled();
+		spyParticleReset.mockClear();
 	});
 
 	test("TextParticle reset 테스트 - 풀에서 꺼내와서 재사용", () => {
 		const text = new TextParticle({ ctx, isSmallScreen });
-
 		const params = { x: 12, y: 45, vx: 0.5, vy: 2.3, color: "rgba(145, 255, 32, 0.8)" };
 		text.reset(params);
 
