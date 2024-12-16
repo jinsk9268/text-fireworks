@@ -149,6 +149,8 @@ export const TEST_OPTION = {
 	INNER_WIDTH: 1000,
 	SMALL_INNER_WIDTH: 400,
 	INNER_HEIGHT: 500,
+	CANVAS_ELEMENT: '<canvas id="canvas"></canvas>',
+	CANVAS_ID: "canvas",
 	PARTICLE_DEFAULT_VALUES: {
 		x: 0,
 		y: 0,

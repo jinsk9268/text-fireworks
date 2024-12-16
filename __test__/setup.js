@@ -1,3 +1,5 @@
+import { TEST_OPTION } from "@/js/constants.js";
+
 /** 공통 설정 적용 */
 Object.defineProperty(window, "matchMedia", {
 	writable: true,
@@ -13,6 +15,14 @@ Object.defineProperty(window, "matchMedia", {
  */
 export const defineWidowProperty = (property, value) => {
 	Object.defineProperty(window, property, { writable: true, value });
+};
+
+const { CANVAS_ELEMENT, TYPE_INNER_WIDTH, TYPE_INNER_HEIGHT, INNER_WIDTH, INNER_HEIGHT } = TEST_OPTION;
+export const setTestCanvas = () => {
+	document.body.innerHTML = CANVAS_ELEMENT;
+
+	defineWidowProperty(TYPE_INNER_WIDTH, INNER_WIDTH);
+	defineWidowProperty(TYPE_INNER_HEIGHT, INNER_HEIGHT);
 };
 
 /**
