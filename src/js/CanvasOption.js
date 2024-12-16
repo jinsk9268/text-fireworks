@@ -49,7 +49,7 @@ class CanvasOption {
 	 * @returns {number} 서브 폰트 사이즈 반환
 	 */
 	setSubFontSize() {
-		return Math.round(this.mainFontSize) * FONT.SUB_RATIO;
+		return Math.round(this.mainFontSize * FONT.SUB_RATIO);
 	}
 
 	/**
