@@ -235,7 +235,7 @@ class Canvas extends CanvasOption {
 	updateTextParticle() {
 		for (let i = this.textParticles.length - 1; i >= 0; i--) {
 			const text = this.textParticles[i];
-			text.update(this.textLength);
+			text.update();
 			text.draw();
 
 			if (text.belowOpacityLimit() || this.isOutOfCanvasArea(text.x, text.y)) {
