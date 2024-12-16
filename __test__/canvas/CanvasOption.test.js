@@ -1,20 +1,15 @@
-import { defineWidowProperty } from "./setup";
+import { setTestCanvas, defineWidowProperty } from "../setup";
 import CanvasOption from "@/js/CanvasOption.js";
 import { ANIMATION, SCREEN, POS, FONT, TEST_OPTION } from "@/js/constants.js";
 
-const { TYPE_INNER_WIDTH, TYPE_INNER_HEIGHT, INNER_WIDTH, SMALL_INNER_WIDTH, INNER_HEIGHT } = TEST_OPTION;
+const { TYPE_INNER_WIDTH, INNER_WIDTH, SMALL_INNER_WIDTH, INNER_HEIGHT } = TEST_OPTION;
 
 describe("CanvasOption 테스트 (jest-canvas-mock 활용)", () => {
 	let canvasOption;
 
 	beforeEach(() => {
-		document.body.innerHTML = '<canvas id="canvas"></canvas>';
-
-		defineWidowProperty(TYPE_INNER_WIDTH, INNER_WIDTH);
-		defineWidowProperty(TYPE_INNER_HEIGHT, INNER_HEIGHT);
-
+		setTestCanvas();
 		canvasOption = new CanvasOption();
-		jest.spyOn(canvasOption.ctx, "fillRect"); // jest-canvas-mock
 	});
 
 	/** 캔버스 멤버변수 초기화 관련 메서드 테스트 */
@@ -25,8 +20,7 @@ describe("CanvasOption 테스트 (jest-canvas-mock 활용)", () => {
 		});
 
 		test("캔버스 객체를 불러오지 못할 경우 에러 처리", () => {
-			const deleteCanvas = document.getElementById("canvas");
-			deleteCanvas.remove();
+			document.getElementById(TEST_OPTION.CANVAS_ID).remove();
 
 			expect(() => new CanvasOption()).toThrow("캔버스 객체를 발견하지 못했습니다. 다시 확인해주세요.");
 		});
@@ -74,7 +68,7 @@ describe("CanvasOption 테스트 (jest-canvas-mock 활용)", () => {
 		test("subFontSize 테스트", () => {
 			const result = canvasOption.setSubFontSize();
 
-			expect(result).toBe(Math.round(canvasOption.mainFontSize) * FONT.SUB_RATIO);
+			expect(result).toBe(Math.round(canvasOption.mainFontSize * FONT.SUB_RATIO));
 		});
 	});
 
