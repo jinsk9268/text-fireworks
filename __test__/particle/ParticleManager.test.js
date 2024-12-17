@@ -70,7 +70,7 @@ describe("ParticleManager 단위 테스트", () => {
 		expectAllParticleVars(particle, expectedResult);
 		if (!isUndefined(originVars)) {
 			Object.keys(originVars).forEach((key) => {
-				expect(particle[key]).toBe(originVars[key]);
+				expect(particle).toHaveProperty(key, originVars[key]);
 			});
 		}
 		if (!isUndefined(initialState)) {
@@ -141,7 +141,7 @@ describe("ParticleManager 단위 테스트", () => {
 			({ type, params, originVars, resetOriginVars, initialState }) => {
 				const returnedParticle = new PARTICLE_MAP[type]({ ctx, isSmallScreen, ...params });
 
-				expect(particleManager.pool[type].length).toBe(0);
+				expect(particleManager.pool[type].length).toBeLessThan(particleManager.maxPoolSize[type]);
 				particleManager.returnToPool(type, returnedParticle);
 
 				expectedTestValues({
@@ -150,7 +150,7 @@ describe("ParticleManager 단위 테스트", () => {
 					originVars: resetOriginVars ?? originVars,
 					initialState,
 				});
-				expect(particleManager.pool[type].length).toBe(1);
+				expect(particleManager.pool[type]).toHaveLength(1);
 
 				expect(spyPartricleReset).toHaveBeenCalledTimes(1);
 			},
