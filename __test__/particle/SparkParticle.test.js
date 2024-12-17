@@ -67,7 +67,7 @@ describe("SparkParticle 클래스 단위 테스트", () => {
 		spark.reset();
 
 		expectAllParticleVars(spark, PARTICLE_DEFAULT_VALUES);
-		expect(spyParticleReset).toHaveBeenCalled;
+		expect(spyParticleReset).toHaveBeenCalled();
 
 		spyParticleReset.mockClear();
 	});
