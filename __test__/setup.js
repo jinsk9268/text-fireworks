@@ -10,19 +10,21 @@ Object.defineProperty(window, "matchMedia", {
 
 /** 공통 함수 */
 /**
- * @param {string} property 지정할 속성
- * @param {*} value 속성값
+ * @param {object} params
+ * @param {Window | Document} params.domObj Dom Object
+ * @param {string} params.property 지정할 속성
+ * @param {*} params.value 속성값
  */
-export const defineWidowProperty = (property, value) => {
-	Object.defineProperty(window, property, { writable: true, value });
+export const defineDomObjectProperty = ({ domObj, property, value }) => {
+	Object.defineProperty(domObj, property, { writable: true, value });
 };
 
 const { CANVAS_ELEMENT, TYPE_INNER_WIDTH, TYPE_INNER_HEIGHT, INNER_WIDTH, INNER_HEIGHT } = TEST_OPTION;
 export const setTestCanvas = () => {
 	document.body.innerHTML = CANVAS_ELEMENT;
 
-	defineWidowProperty(TYPE_INNER_WIDTH, INNER_WIDTH);
-	defineWidowProperty(TYPE_INNER_HEIGHT, INNER_HEIGHT);
+	defineDomObjectProperty({ domObj: window, property: TYPE_INNER_WIDTH, value: INNER_WIDTH });
+	defineDomObjectProperty({ domObj: window, property: TYPE_INNER_HEIGHT, value: INNER_HEIGHT });
 };
 
 /**

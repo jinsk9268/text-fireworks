@@ -28,6 +28,19 @@ describe("Canvas 클래스 파티클 업데이트 테스트", () => {
 		spyReturnToPool.mockClear();
 	});
 
+	/**
+	 * @param {jest.SpyInstance} spyUpdate 파티클 update 메서드 스파이
+	 * @param {jest.SpyInstance} spyDraw 파티클 draw 메서드 스파이
+	 * @param {Array} particleArr 파티클 배열
+	 * @param {number} length 배열 길이
+	 */
+	function expectAfterParticleUpdate(spyUpdate, spyDraw, particleArr, length) {
+		expect(spyUpdate).toHaveBeenCalledTimes(1);
+		expect(spyDraw).toHaveBeenCalledTimes(1);
+		expect(particleArr).toHaveLength(length);
+		length === 0 ? expect(spyReturnToPool).toHaveBeenCalledTimes(1) : expect(spyReturnToPool).not.toHaveBeenCalled();
+	}
+
 	describe("TailParticle 업데이트 테스트", () => {
 		let spyCreateTextParticle;
 		let spyCreateCircleParticle;
@@ -58,19 +71,15 @@ describe("Canvas 클래스 파티클 업데이트 테스트", () => {
 			);
 			canvasInst.updateTailParticle();
 
-			expect(spyTailUpdate).toHaveBeenCalledTimes(1);
-			expect(spyTailDraw).toHaveBeenCalledTimes(1);
-			expect(canvasInst.tailParticles).toHaveLength(length);
+			expectAfterParticleUpdate(spyTailUpdate, spyTailDraw, canvasInst.tailParticles, length);
 
 			if (length > 0) {
 				expect(canvasInst.tailParticles[0].belowOpacityLimit(TAIL.OPACITY_LIMIT)).toBeFalsy();
 				expect(spyCreateTextParticle).not.toHaveBeenCalled();
 				expect(spyCreateCircleParticle).not.toHaveBeenCalled();
-				expect(spyReturnToPool).not.toHaveBeenCalled();
 			} else {
 				expect(spyCreateTextParticle).toHaveBeenCalledTimes(1);
 				expect(spyCreateCircleParticle).toHaveBeenCalledTimes(1);
-				expect(spyReturnToPool).toHaveBeenCalledTimes(1);
 			}
 		});
 	});
@@ -96,25 +105,15 @@ describe("Canvas 클래스 파티클 업데이트 테스트", () => {
 			canvasInst.textParticles.push(new TextParticle({ ctx: canvasInst.ctx, isSmallScreen: canvasInst.isSmallScreen, x, y, vx, vy }));
 		}
 
-		function expectAfterUpdatedReturnToPool() {
-			expect(spyTextUpdate).toHaveBeenCalledTimes(1);
-			expect(spyTextDraw).toHaveBeenCalledTimes(1);
-			expect(canvasInst.textParticles).toHaveLength(0);
-			expect(spyReturnToPool).toHaveBeenCalledTimes(1);
-		}
-
 		test("updateTextParticle 테스트 | opacity 상한선 이하(X), 캔버스 영역 밖(X)", () => {
 			setTextParticles();
 			canvasInst.updateTextParticle();
 
-			expect(spyTextUpdate).toHaveBeenCalledTimes(1);
-			expect(spyTextDraw).toHaveBeenCalledTimes(1);
-			expect(canvasInst.textParticles).toHaveLength(1);
+			expectAfterParticleUpdate(spyTextUpdate, spyTextDraw, canvasInst.textParticles, 1);
 
 			const updatedParticle = canvasInst.textParticles[0];
 			expect(updatedParticle.belowOpacityLimit()).toBeFalsy();
 			expect(canvasInst.isOutOfCanvasArea(updatedParticle.x, updatedParticle.y)).toBeFalsy();
-			expect(spyReturnToPool).not.toHaveBeenCalled();
 		});
 
 		test("updateTextParticle 테스트 | opacity 상한선 이하(O), 캔버스 영역  밖(X)", () => {
@@ -122,7 +121,7 @@ describe("Canvas 클래스 파티클 업데이트 테스트", () => {
 			canvasInst.textParticles[0].opacity = 0;
 			canvasInst.updateTextParticle();
 
-			expectAfterUpdatedReturnToPool();
+			expectAfterParticleUpdate(spyTextUpdate, spyTextDraw, canvasInst.textParticles, 0);
 		});
 
 		test.each([
@@ -134,7 +133,7 @@ describe("Canvas 클래스 파티클 업데이트 테스트", () => {
 			setTextParticles(params);
 			canvasInst.updateTextParticle();
 
-			expectAfterUpdatedReturnToPool();
+			expectAfterParticleUpdate(spyTextUpdate, spyTextDraw, canvasInst.textParticles, 0);
 		});
 	});
 
@@ -162,21 +161,14 @@ describe("Canvas 클래스 파티클 업데이트 테스트", () => {
 			canvasInst.updateCircleParticle();
 		}
 
-		function expectedUpdateAndDraw({ length }) {
-			expect(spyCircleUpdate).toHaveBeenCalledTimes(1);
-			expect(spyCircleDraw).toHaveBeenCalledTimes(1);
-			expect(canvasInst.circleParticles).toHaveLength(length);
-		}
-
 		test("updateCircleParticle 테스트 | opacity 상한선 이하(X), 캔버스 영역 밖(X)", () => {
 			setUpdateCircleParticles();
 
-			expectedUpdateAndDraw({ length: 1 });
+			expectAfterParticleUpdate(spyCircleUpdate, spyCircleDraw, canvasInst.circleParticles, 1);
 
 			const updatedParticle = canvasInst.circleParticles[0];
 			expect(updatedParticle.belowOpacityLimit()).toBeFalsy();
 			expect(canvasInst.isOutOfCanvasArea(updatedParticle.x, updatedParticle.y)).toBeFalsy();
-			expect(spyReturnToPool).not.toHaveBeenCalled();
 		});
 
 		test.each([
@@ -188,9 +180,7 @@ describe("Canvas 클래스 파티클 업데이트 테스트", () => {
 		])("updateCircleParticle 테스트 | opacity 상한선 이하($opacity), 캔버스 영역 밖($canvasOut, 캔버스 $notice)", ({ params }) => {
 			setUpdateCircleParticles(params);
 
-			expectedUpdateAndDraw({ length: 0 });
-
-			expect(spyReturnToPool).toHaveBeenCalledTimes(1);
+			expectAfterParticleUpdate(spyCircleUpdate, spyCircleDraw, canvasInst.circleParticles, 0);
 		});
 	});
 
@@ -218,21 +208,14 @@ describe("Canvas 클래스 파티클 업데이트 테스트", () => {
 			canvasInst.updateSparkParticle();
 		}
 
-		function expectAfterUpdatedReturnToPool({ length }) {
-			expect(spySparkUpdate).toHaveBeenCalledTimes(1);
-			expect(spySparkDraw).toHaveBeenCalledTimes(1);
-			expect(canvasInst.sparkParticles).toHaveLength(length);
-		}
-
 		test("updateSparkParticle 테스트 | opacity 상한선 이하(X), 캔버스 영역 밖(X)", () => {
 			setSparkParticles();
 
-			expectAfterUpdatedReturnToPool({ length: 1 });
+			expectAfterParticleUpdate(spySparkUpdate, spySparkDraw, canvasInst.sparkParticles, 1);
 
 			const updatedParticle = canvasInst.sparkParticles[0];
 			expect(updatedParticle.belowOpacityLimit()).toBeFalsy();
 			expect(canvasInst.isOutOfCanvasArea(updatedParticle.x, updatedParticle.y)).toBeFalsy();
-			expect(spyReturnToPool).not.toHaveBeenCalled();
 		});
 
 		test.each([
@@ -244,8 +227,7 @@ describe("Canvas 클래스 파티클 업데이트 테스트", () => {
 		])("updateTextParticle 테스트 | opacity 상한선 이하($opacity), 캔버스 영역 밖($canvasOut, 캔버스 $notice)", ({ params }) => {
 			setSparkParticles(params);
 
-			expectAfterUpdatedReturnToPool({ length: 0 });
-			expect(spyReturnToPool).toHaveBeenCalledTimes(1);
+			expectAfterParticleUpdate(spySparkUpdate, spySparkDraw, canvasInst.sparkParticles, 0);
 		});
 	});
 });

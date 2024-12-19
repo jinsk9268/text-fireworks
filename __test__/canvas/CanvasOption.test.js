@@ -1,4 +1,4 @@
-import { setTestCanvas, defineWidowProperty } from "../setup";
+import { setTestCanvas, defineDomObjectProperty } from "../setup";
 import CanvasOption from "@/js/CanvasOption.js";
 import { ANIMATION, SCREEN, POS, FONT, TEST_OPTION } from "@/js/constants.js";
 
@@ -44,7 +44,7 @@ describe("CanvasOption 테스트 (jest-canvas-mock 활용)", () => {
 		});
 
 		test("모바일 화면일때", () => {
-			defineWidowProperty(TYPE_INNER_WIDTH, SMALL_INNER_WIDTH);
+			defineDomObjectProperty({ domObj: window, property: TYPE_INNER_WIDTH, value: SMALL_INNER_WIDTH });
 			canvasOption.initCanvasOptionVars();
 
 			expect(canvasOption.isSmallScreen).toBe(true);
@@ -54,7 +54,7 @@ describe("CanvasOption 테스트 (jest-canvas-mock 활용)", () => {
 			{ fontsize: undefined, testWidth: INNER_WIDTH, notice: "PC 화면-인자 전달하지 않아 기본값 적용" },
 			{ fontsize: 100, testWidth: SMALL_INNER_WIDTH, notice: "모바일 화면-인자 100 전달" },
 		])("mainFontSize($fontsize) 테스트 ($notice)", ({ fontsize, testWidth }) => {
-			defineWidowProperty(TYPE_INNER_WIDTH, testWidth);
+			defineDomObjectProperty({ domObj: window, property: TYPE_INNER_WIDTH, value: testWidth });
 			canvasOption.initCanvasOptionVars();
 
 			const result = canvasOption.setMainFontSize(fontsize);

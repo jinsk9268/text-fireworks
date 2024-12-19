@@ -46,8 +46,8 @@ describe("Canvas 클래스 초기화 테스트", () => {
 	});
 
 	test("init 테스트", () => {
-		jest.spyOn(canvasInst, "createTailPosX");
-		jest.spyOn(canvasInst, "createTailVY");
+		const spyCreateTailPosX = jest.spyOn(canvasInst, "createTailPosX");
+		const spyCreateTailVY = jest.spyOn(canvasInst, "createTailVY");
 
 		canvasInst.init();
 
@@ -62,12 +62,15 @@ describe("Canvas 클래스 초기화 테스트", () => {
 		expect(canvasInst.tailsRightPosX).toBeDefined();
 		expect(canvasInst.tailsLeftPosX).toHaveLength(TAIL.BASE_QTY);
 		expect(canvasInst.tailsRightPosX).toHaveLength(TAIL.BASE_QTY);
-		expect(canvasInst.createTailPosX).toHaveBeenCalled();
-		expect(canvasInst.createTailVY).toHaveBeenCalled();
+		expect(spyCreateTailPosX).toHaveBeenCalledTimes(1);
+		expect(spyCreateTailVY).toHaveBeenCalledTimes(1);
 
 		expect(canvasInst.pm.isSmallScreen).toBeFalsy();
 		expect(canvasInst.pm.maxPoolSize[PARTICLE.TYPE_TEXT]).toBe(PARTICLE.TEXT_POOL * canvasInst.textLength);
 		expect(canvasInst.pm.maxPoolSize[PARTICLE.TYPE_SPARK]).toBe(PARTICLE.SPARK_POOL * canvasInst.textLength);
+
+		spyCreateTailPosX.mockClear();
+		spyCreateTailVY.mockClear();
 	});
 
 	test.each([

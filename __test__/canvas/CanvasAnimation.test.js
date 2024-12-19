@@ -1,7 +1,7 @@
 import Canvas from "@/js/Canvas.js";
 import CanvasOption from "@/js/CanvasOption.js";
 import { ANIMATION } from "@/js/constants.js";
-import { setTestCanvas } from "../setup.js";
+import { setTestCanvas, defineDomObjectProperty } from "../setup.js";
 
 describe("Canvas 클래스 애니메이션 테스트", () => {
 	let canvasInst;
@@ -17,10 +17,7 @@ describe("Canvas 클래스 애니메이션 테스트", () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 
-		Object.defineProperty(document, "timeline", {
-			writable: true,
-			value: { currentTime: 0 },
-		});
+		defineDomObjectProperty({ domObj: document, property: "timeline", value: { currentTime: 0 } });
 
 		setTestCanvas();
 		canvasInst = new Canvas();
@@ -81,19 +78,19 @@ describe("Canvas 클래스 애니메이션 테스트", () => {
 
 describe("Canvas 클래스 렌더 테스트", () => {
 	let canvasInst;
-	let spyCreateTextData;
+	let spyCreateTextDatas;
 	let spyAnimateFireworks;
 
 	beforeEach(() => {
 		setTestCanvas();
 		canvasInst = new Canvas();
 
-		spyCreateTextData = jest.spyOn(canvasInst, "createTextDatas");
+		spyCreateTextDatas = jest.spyOn(canvasInst, "createTextDatas");
 		spyAnimateFireworks = jest.spyOn(canvasInst, "animateFireworks");
 	});
 
 	afterEach(() => {
-		spyCreateTextData.mockClear();
+		spyCreateTextDatas.mockClear();
 		spyAnimateFireworks.mockClear();
 	});
 
@@ -108,10 +105,10 @@ describe("Canvas 클래스 렌더 테스트", () => {
 		canvasInst.render();
 
 		if (text.length > 0) {
-			expect(spyCreateTextData).toHaveBeenCalled();
-			expect(spyAnimateFireworks).toHaveBeenCalled();
+			expect(spyCreateTextDatas).toHaveBeenCalledTimes(1);
+			expect(spyAnimateFireworks).toHaveBeenCalledTimes(1);
 		} else {
-			expect(spyCreateTextData).not.toHaveBeenCalled();
+			expect(spyCreateTextDatas).not.toHaveBeenCalled();
 			expect(spyAnimateFireworks).not.toHaveBeenCalled();
 		}
 	});

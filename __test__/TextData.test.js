@@ -1,16 +1,14 @@
 import TextData from "@/js/TextData.js";
 import { FONT, TEST_OPTION } from "@/js/constants.js";
-import { defineWidowProperty } from "./setup.js";
+import { setTestCanvas } from "./setup.js";
 
 describe("TextData 클래스 단위 테스트", () => {
 	let textData;
 	const [userInput, fontSize] = ["TextData 테스트", 100];
-	const { TYPE_INNER_WIDTH, TYPE_INNER_HEIGHT, INNER_WIDTH, INNER_HEIGHT } = TEST_OPTION;
+	const { INNER_WIDTH, INNER_HEIGHT } = TEST_OPTION;
 
 	beforeEach(() => {
-		document.body.innerHTML = '<canvas id="canvas"></canvas>';
-		defineWidowProperty(TYPE_INNER_WIDTH, INNER_WIDTH);
-		defineWidowProperty(TYPE_INNER_HEIGHT, INNER_HEIGHT);
+		setTestCanvas();
 
 		textData = new TextData(userInput, fontSize);
 		textData.canvas.width = INNER_WIDTH * textData.dpr;

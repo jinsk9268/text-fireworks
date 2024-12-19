@@ -59,7 +59,9 @@ describe("Canvas 클래스 textData 생성 테스트", () => {
 
 		expect(spyDrawText).toHaveBeenCalledTimes(2);
 		expect(canvasInst.mainTextData).not.toEqual({});
+		expect(canvasInst.mainTextData.data).toBeInstanceOf(Uint8ClampedArray);
 		expect(canvasInst.subTextData).not.toEqual({});
+		expect(canvasInst.subTextData.data).toBeInstanceOf(Uint8ClampedArray);
 
 		spyDrawText.mockClear();
 	});
