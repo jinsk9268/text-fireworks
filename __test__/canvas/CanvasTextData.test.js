@@ -24,8 +24,7 @@ describe("Canvas 클래스 textData 생성 테스트", () => {
 	});
 
 	afterEach(() => {
-		spySetMainFontsize.mockClear();
-		spySetSubFontsize.mockClear();
+		jest.clearAllMocks();
 	});
 
 	test("adjustFontSize 테스트 | textWidth가 maxWidth 미만일 때", () => {
@@ -62,7 +61,5 @@ describe("Canvas 클래스 textData 생성 테스트", () => {
 		expect(canvasInst.mainTextData.data).toBeInstanceOf(Uint8ClampedArray);
 		expect(canvasInst.subTextData).not.toEqual({});
 		expect(canvasInst.subTextData.data).toBeInstanceOf(Uint8ClampedArray);
-
-		spyDrawText.mockClear();
 	});
 });

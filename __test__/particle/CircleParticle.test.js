@@ -23,6 +23,10 @@ describe("CircleParticle 단위 테스트", () => {
 		ctx = createMockCanvasCtx();
 	});
 
+	afterEach(() => {
+		jest.clearAllMocks();
+	});
+
 	function expectAllCircleVars(circle, expectedresult) {
 		expectAllParticleVars(circle, expectedresult);
 		expect(circle.gravity).toBe(CIRCLE.GRAVITY);
@@ -45,8 +49,6 @@ describe("CircleParticle 단위 테스트", () => {
 		expect(circle.ctx.save).toHaveBeenCalledTimes(1);
 		expect(spyParticleDraw).toHaveBeenCalled();
 		expect(circle.ctx.restore).toHaveBeenCalledTimes(1);
-
-		spyParticleDraw.mockClear();
 	});
 
 	test("CircleParticle update 메서드 테스트", () => {
@@ -69,8 +71,6 @@ describe("CircleParticle 단위 테스트", () => {
 		};
 		expectAllCircleVars(circle, expectedResult);
 		expect(spyParticleUpdate).toHaveBeenCalled();
-
-		spyParticleUpdate.mockClear();
 	});
 
 	test("CircleParticle reset 테스트 - 사용된 파티클 풀에 반환시 초기화", () => {
@@ -90,8 +90,6 @@ describe("CircleParticle 단위 테스트", () => {
 
 		expectAllCircleVars(circle, { ...PARTICLE_DEFAULT_VALUES, friction: CIRCLE.FRICTION });
 		expect(spyParticleReset).toHaveBeenCalled();
-
-		spyParticleReset.mockClear();
 	});
 
 	test("CircleParticle reset 테스트 - 풀에서 꺼내와서 재사용", () => {

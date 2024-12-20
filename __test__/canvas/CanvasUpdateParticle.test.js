@@ -25,7 +25,7 @@ describe("Canvas 클래스 파티클 업데이트 테스트", () => {
 	});
 
 	afterEach(() => {
-		spyReturnToPool.mockClear();
+		jest.clearAllMocks();
 	});
 
 	/**
@@ -52,13 +52,6 @@ describe("Canvas 클래스 파티클 업데이트 테스트", () => {
 			spyCreateCircleParticle = jest.spyOn(canvasInst, "createCircleParticle");
 			spyTailUpdate = jest.spyOn(TailParticle.prototype, "update");
 			spyTailDraw = jest.spyOn(TailParticle.prototype, "draw");
-		});
-
-		afterEach(() => {
-			spyCreateTextParticle.mockClear();
-			spyCreateCircleParticle.mockClear();
-			spyTailUpdate.mockClear();
-			spyTailDraw.mockClear();
 		});
 
 		test.each([
@@ -91,11 +84,6 @@ describe("Canvas 클래스 파티클 업데이트 테스트", () => {
 		beforeEach(() => {
 			spyTextUpdate = jest.spyOn(TextParticle.prototype, "update");
 			spyTextDraw = jest.spyOn(TextParticle.prototype, "draw");
-		});
-
-		afterEach(() => {
-			spyTextUpdate.mockClear();
-			spyTextDraw.mockClear();
 		});
 
 		function setTextParticles(params = {}) {
@@ -146,11 +134,6 @@ describe("Canvas 클래스 파티클 업데이트 테스트", () => {
 			spyCircleDraw = jest.spyOn(CircleParticle.prototype, "draw");
 		});
 
-		afterEach(() => {
-			spyCircleUpdate.mockClear();
-			spyCircleDraw.mockClear();
-		});
-
 		function setUpdateCircleParticles(params = {}) {
 			canvasInst.init();
 			// 원활한 테스트를 위해 1개만 추가
@@ -191,11 +174,6 @@ describe("Canvas 클래스 파티클 업데이트 테스트", () => {
 		beforeEach(() => {
 			spySparkUpdate = jest.spyOn(SparkParticle.prototype, "update");
 			spySparkDraw = jest.spyOn(SparkParticle.prototype, "draw");
-		});
-
-		afterEach(() => {
-			spySparkUpdate.mockClear();
-			spySparkDraw.mockClear();
 		});
 
 		function setSparkParticles(params = {}) {

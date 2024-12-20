@@ -23,6 +23,10 @@ describe("SparkParticle 클래스 단위 테스트", () => {
 		ctx = createMockCanvasCtx();
 	});
 
+	afterEach(() => {
+		jest.clearAllMocks();
+	});
+
 	test("SpartParticle 생성자와 멤버변수 초기화 테스트", () => {
 		const params = { x: 1, y: 1, vx: 20, vy: 20, radius: 10, opacity: 0.45, color: "hsla(270, 60%, 70%)" };
 		const spark = new SparkParticle({ ctx, isSmallScreen, ...params });
@@ -36,8 +40,6 @@ describe("SparkParticle 클래스 단위 테스트", () => {
 		spark.draw();
 
 		expect(spyParticleDraw).toHaveBeenCalled();
-
-		spyParticleDraw.mockClear();
 	});
 
 	test("SparkParticle update 테스트", () => {
@@ -57,8 +59,6 @@ describe("SparkParticle 클래스 단위 테스트", () => {
 		};
 		expectAllParticleVars(spark, expectedResult);
 		expect(spyParticleUpdatePosition).toHaveBeenCalled();
-
-		spyParticleUpdatePosition.mockClear();
 	});
 
 	test("SparkParticle reset 테스트 - 사용된 파티클 풀에 반환시 초기화", () => {
@@ -68,8 +68,6 @@ describe("SparkParticle 클래스 단위 테스트", () => {
 
 		expectAllParticleVars(spark, PARTICLE_DEFAULT_VALUES);
 		expect(spyParticleReset).toHaveBeenCalled();
-
-		spyParticleReset.mockClear();
 	});
 
 	test("SparkParticle reset 테스트 - 풀에서 꺼내와서 재사용", () => {

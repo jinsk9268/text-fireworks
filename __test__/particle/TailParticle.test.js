@@ -26,6 +26,10 @@ describe("TailParticle 클래스 단위 테스트", () => {
 		isSmallScreen = false;
 	});
 
+	afterEach(() => {
+		jest.clearAllMocks();
+	});
+
 	/**
 	 * TailParticle 클래스 모든 멤버변수 검증
 	 * @param {TailParticle} tail
@@ -56,8 +60,6 @@ describe("TailParticle 클래스 단위 테스트", () => {
 		tail.draw();
 
 		expect(spyTailDraw).toHaveBeenCalledTimes(1);
-
-		spyTailDraw.mockClear();
 	});
 
 	test("TailParticle update 테스트", () => {
@@ -83,8 +85,6 @@ describe("TailParticle 클래스 단위 테스트", () => {
 		expect(spyUpdatePosition).toHaveBeenCalledTimes(1);
 		expect(randomFloat).toHaveBeenCalled();
 		expect(setRgbaColor).toHaveBeenCalled();
-
-		spyUpdatePosition.mockClear();
 	});
 
 	test("TailParticle reset 테스트 - 사용된 파티클 풀에 반환시 초기화", () => {
@@ -101,9 +101,6 @@ describe("TailParticle 클래스 단위 테스트", () => {
 		expect(randomFloat).toHaveBeenCalled();
 		expect(setRgbaColor).toHaveBeenCalled();
 		expect(spyInitTailParticleVars).toHaveBeenCalledTimes(1);
-
-		spyParticleReset.mockClear();
-		spyInitTailParticleVars.mockClear();
 	});
 
 	test("TailParticle reset 테스트 - 풀에서 꺼내와서 재사용", () => {

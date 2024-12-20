@@ -34,12 +34,7 @@ describe("Canvas 클래스 애니메이션 테스트", () => {
 
 	afterEach(() => {
 		jest.useRealTimers();
-		spyFillFullCanvas.mockClear();
-		spyCreateTailParticle.mockClear();
-		spyUpdateTailParticle.mockClear();
-		spyUpdateCircleParticle.mockClear();
-		spyUpdateTextParticle.mockClear();
-		spyUpdateSparkParticle.mockClear();
+		jest.clearAllMocks();
 	});
 
 	let fpsMultiplier = 1;
@@ -87,11 +82,6 @@ describe("Canvas 클래스 렌더 테스트", () => {
 
 		spyCreateTextDatas = jest.spyOn(canvasInst, "createTextDatas");
 		spyAnimateFireworks = jest.spyOn(canvasInst, "animateFireworks");
-	});
-
-	afterEach(() => {
-		spyCreateTextDatas.mockClear();
-		spyAnimateFireworks.mockClear();
 	});
 
 	test.each([

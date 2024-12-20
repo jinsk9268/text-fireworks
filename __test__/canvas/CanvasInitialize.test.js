@@ -21,7 +21,7 @@ describe("Canvas 클래스 초기화 테스트", () => {
 	});
 
 	afterEach(() => {
-		spyInitCanvasVars.mockClear();
+		jest.clearAllMocks();
 	});
 
 	test("constructor, initCanvasVars 테스트 | 생성자와 멤버변수 초기화 테스트", () => {
@@ -68,9 +68,6 @@ describe("Canvas 클래스 초기화 테스트", () => {
 		expect(canvasInst.pm.isSmallScreen).toBeFalsy();
 		expect(canvasInst.pm.maxPoolSize[PARTICLE.TYPE_TEXT]).toBe(PARTICLE.TEXT_POOL * canvasInst.textLength);
 		expect(canvasInst.pm.maxPoolSize[PARTICLE.TYPE_SPARK]).toBe(PARTICLE.SPARK_POOL * canvasInst.textLength);
-
-		spyCreateTailPosX.mockClear();
-		spyCreateTailVY.mockClear();
 	});
 
 	test.each([

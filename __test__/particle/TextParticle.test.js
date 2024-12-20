@@ -23,6 +23,10 @@ describe("TextParticle 클래스 단위 테스트", () => {
 		ctx = createMockCanvasCtx();
 	});
 
+	afterEach(() => {
+		jest.clearAllMocks();
+	});
+
 	function expectAllTextVars(text, params) {
 		expectAllParticleVars(text, params);
 		expect(text.gravity).toBe(TEXT.GRAVITY);
@@ -43,8 +47,6 @@ describe("TextParticle 클래스 단위 테스트", () => {
 		text.draw();
 
 		expect(spyParticleDraw).toHaveBeenCalledTimes(1);
-
-		spyParticleDraw.mockClear();
 	});
 
 	test("TextParticle update 테스트", () => {
@@ -66,8 +68,6 @@ describe("TextParticle 클래스 단위 테스트", () => {
 		};
 		expectAllTextVars(text, expectedResult);
 		expect(spyParticleUpdate).toHaveBeenCalled();
-
-		spyParticleUpdate.mockClear();
 	});
 
 	test("TextParticle reset 테스트 - 사용된 파티클 풀에 반환시 초기화", () => {
@@ -77,8 +77,6 @@ describe("TextParticle 클래스 단위 테스트", () => {
 
 		expectAllTextVars(text, PARTICLE_DEFAULT_VALUES);
 		expect(spyParticleReset).toHaveBeenCalled();
-
-		spyParticleReset.mockClear();
 	});
 
 	test("TextParticle reset 테스트 - 풀에서 꺼내와서 재사용", () => {

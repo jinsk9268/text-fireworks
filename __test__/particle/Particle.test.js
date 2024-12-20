@@ -27,6 +27,10 @@ describe("Particle 클래스 테스트", () => {
 		isSmallScreen = false;
 	});
 
+	afterEach(() => {
+		jest.clearAllMocks();
+	});
+
 	test.each([
 		{ params: {}, notice: "기본값" },
 		{
@@ -103,9 +107,6 @@ describe("Particle 클래스 테스트", () => {
 
 		expect(spyUpdateVelocity).toHaveBeenCalledTimes(1);
 		expect(spyUpdatePostion).toHaveBeenCalledTimes(1);
-
-		spyUpdateVelocity.mockClear();
-		spyUpdatePostion.mockClear();
 	});
 
 	test.each([
