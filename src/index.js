@@ -23,25 +23,27 @@ const switchScreen = (screen) => {
 	domElements.fireworks.style.display = screen == FIREWORKS ? "block" : "none";
 };
 
-window.addEventListener("load", () => {
+/** 리스너 */
+const handleLoad = () => {
 	domElements.body.style.visibility = "visible";
 	if (isHashFireworks()) {
 		location.hash = "";
 	}
-});
+};
 
 let resizeTimeout;
-window.addEventListener("resize", () => {
+const handleResize = () => {
 	clearTimeout(resizeTimeout);
+
 	resizeTimeout = setTimeout(() => {
 		if (isHashFireworks()) {
 			canvas.init();
 			canvas.createTextDatas();
 		}
 	}, SCREEN.RESIZE_DELAY);
-});
+};
 
-domElements.inputForm.addEventListener("submit", (e) => {
+const handleSubmit = (e) => {
 	e.preventDefault();
 
 	const userInputValue = domElements.userInput.value.trim();
@@ -50,11 +52,11 @@ domElements.inputForm.addEventListener("submit", (e) => {
 		canvas.textLength = userInputValue.length;
 		location.hash = FIREWORKS_HASH;
 	} else {
-		alert("글자를 입력해주세요. 1~10글자 까지 입력 가능합니다.");
+		alert("글자를 입력해주세요. 1~10글자까지 입력 가능합니다.");
 	}
-});
+};
 
-window.addEventListener("hashchange", () => {
+const handleHashChange = () => {
 	if (isHashFireworks()) {
 		canvas.init();
 		canvas.render();
@@ -67,6 +69,12 @@ window.addEventListener("hashchange", () => {
 
 		switchScreen(HOME);
 	}
-});
+};
+
+/** 이벤트 */
+window.addEventListener("load", handleLoad);
+window.addEventListener("resize", handleResize);
+domElements.inputForm.addEventListener("submit", (e) => handleSubmit(e));
+window.addEventListener("hashchange", handleHashChange);
 
 switchScreen(isHashFireworks() ? FIREWORKS : HOME);
