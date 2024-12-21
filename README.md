@@ -132,9 +132,7 @@ npx jest .__test__/테스트 파고싶은 파일
 
 ## 실행 화면
 
-<video src="./public/videos/Fireworks.mov" controls >
-  비디오 태그 지원 X
-</video>
+[![Fireworks 애니메이션 보기](.public/images/fireworks.png)](https://youtu.be/e-9-Fs-1yAs)
 
 ---
 
