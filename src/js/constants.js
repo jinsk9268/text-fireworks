@@ -24,6 +24,7 @@ export const SCREEN = {
 	ALPHA_OFFSET: 0.02,
 	SPEED_CONTROL: 10,
 	ALPHA_CLEANUP: 0.3,
+	IOS: /Mac|iPhone|iPad|iPod/i,
 };
 
 export const POS = {

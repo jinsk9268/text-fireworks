@@ -22,9 +22,12 @@ class CanvasOption {
 	}
 
 	initCanvasOptionVars() {
-		this.dpr = Math.min(Math.round(window.devicePixelRatio), SCREEN.MAX_DPR) || 1;
-		this.canvasCssWidth = window.innerWidth;
-		this.canvasCssHeight = window.innerHeight;
+		const isIos = SCREEN.IOS.test(navigator.userAgent) && navigator.maxTouchPoints > 0;
+		const bottomAddressBarHeightDiff = isIos ? document.documentElement.scrollHeight - visualViewport.height : 0;
+
+		this.dpr = Math.min(Math.round(devicePixelRatio), SCREEN.MAX_DPR) || 1;
+		this.canvasCssWidth = innerWidth;
+		this.canvasCssHeight = innerHeight + bottomAddressBarHeightDiff;
 		this.isSmallScreen = window.matchMedia(`(max-width: ${SCREEN.SMALL_WIDTH}px)`).matches;
 		this.mainX = this.canvasCssWidth / POS.MAIN_X_DIVISOR;
 		this.mainY = Math.floor(this.canvasCssHeight * POS.MAIN_Y_RATIO);
