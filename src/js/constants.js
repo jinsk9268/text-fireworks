@@ -18,9 +18,9 @@ export const SCREEN = {
 	RESIZE_DELAY: 200,
 	MAX_DPR: 3,
 	SMALL_WIDTH: 480,
-	MAX_WIDTH_RATIO: 0.9,
 	BG_RGB: "0, 0, 0",
 	ALPHA_BASE: 0.1,
+	MAX_WIDTH_RATIO: 0.97,
 	ALPHA_OFFSET: 0.02,
 	SPEED_CONTROL: 10,
 	ALPHA_CLEANUP: 0.3,
@@ -34,16 +34,16 @@ export const POS = {
 export const FONT = {
 	// CanvasOption class
 	MAIN_RATIO_GENERAL: 0.09,
-	MAIN_RATIO_SMALL: 0.2,
-	SUB_RATIO: 0.85,
+	MAIN_RATIO_SMALL: 0.15,
+	SUB_RATIO: 0.9,
 	// TextData class
 	FAMILY: "Do Hyeon",
 	TEXT_ALIGN: "center",
 	TEXT_BASELINE: "middle",
 	TEXT_COLOR: "#000000",
 	// Canvas class
-	ADJUST_RATIO: 0.95,
-	MIN_SIZE_RATIO: 0.4,
+	ADJUST_RATIO: 0.97,
+	MIN_SIZE_RATIO: 0.5,
 };
 
 export const PARTICLE = {
