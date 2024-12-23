@@ -6,21 +6,6 @@ var inappdeny_exec_vanillajs = (callback) => {
 	}
 };
 inappdeny_exec_vanillajs(() => {
-	/* Do things after DOM has fully loaded */
-	function copytoclipboard(val) {
-		var t = document.createElement("textarea");
-		document.body.appendChild(t);
-		t.value = val;
-		t.select();
-		document.execCommand("copy");
-		document.body.removeChild(t);
-	}
-	function inappbrowserout() {
-		copytoclipboard(window.location.href);
-		alert('URL주소가 복사되었습니다.\n\nSafari가 열리면 주소창을 길게 터치한 뒤, "붙여놓기 및 이동"를 누르면 정상적으로 이용하실 수 있습니다.');
-		location.href = "x-web-search://?";
-	}
-
 	var useragt = navigator.userAgent.toLowerCase();
 	var target_url = location.href;
 
