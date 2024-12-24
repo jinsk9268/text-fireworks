@@ -57,21 +57,21 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 25%;
+	width: calc((100vw + 100vh) * 0.13);
 	border-radius: 30px;
 	box-shadow: 0px 0px 20px 10px white, 0px 0px 50px 30px deepskyblue, 0px 0px 80px 40px rgba(0, 191, 255, 0.5);
 	z-index: 0;
 }
 
-@media (max-width: 767px) {
+@media (min-width: 2560px) {
 	#input_box {
-		width: 40%;
+		width: calc((100vw + 100vh) * 0.06);
 	}
 }
 
 @media (max-width: 480px) {
 	#input_box {
-		width: 50%;
+		width: 60%;
 	}
 }
 
