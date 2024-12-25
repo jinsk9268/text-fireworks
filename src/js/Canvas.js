@@ -224,7 +224,14 @@ class Canvas extends CanvasOption {
 
 				if (alpha > 0) {
 					const { vx, vy } = this.calculateTextParticleVelocity({ stringCenterX, stringCenterY, w, h, x, y });
-					const params = { x, y, vx, vy, color: setHslaColor({ hue: randomInt(TEXT.MIN_HUE, TEXT.MAX_HUE) }) };
+					const params = {
+						x,
+						y,
+						vx,
+						vy,
+						radius: PARTICLE.RADIUS - 0.02 * this.textLength,
+						color: setHslaColor({ hue: randomInt(TEXT.MIN_HUE, TEXT.MAX_HUE) }),
+					};
 
 					this.textParticles.push(this.pm.acquireParticle(TYPE_TEXT, params));
 				}
@@ -289,7 +296,7 @@ class Canvas extends CanvasOption {
 	createCircleParticle(x, y) {
 		const layerOffset = this.calculateLayerOffset(this.isMain(x) ? this.mainTextData.width : this.subTextData.width);
 		const textLengthOffset = CIRCLE.BASE_TEXT_OFFSET - this.textLength;
-		const baseSpeed = layerOffset / this.interval;
+		const baseSpeed = layerOffset / this.interval + this.textLength / CIRCLE.SPEED_DIVISOR;
 
 		for (let layerIdx = 0; layerIdx < CIRCLE.LAYERS; layerIdx++) {
 			const speedFactor = baseSpeed + layerIdx;
@@ -318,7 +325,7 @@ class Canvas extends CanvasOption {
 	updateCircleParticle() {
 		for (let i = this.circleParticles.length - 1; i >= 0; i--) {
 			const circle = this.circleParticles[i];
-			circle.update();
+			circle.update(this.textLength);
 			circle.draw();
 
 			if (Math.random() < SPARK.CIRCLE_CREATION_RATE * this.textLength) {
