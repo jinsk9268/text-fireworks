@@ -43,6 +43,13 @@ const handleResize = () => {
 	}, SCREEN.RESIZE_DELAY);
 };
 
+const handleInput = (e) => {
+	const { value, maxLength } = e.target;
+	if (value.length > maxLength) {
+		e.target.value = value.substr(0, maxLength);
+	}
+};
+
 const handleSubmit = (e) => {
 	e.preventDefault();
 
@@ -74,6 +81,7 @@ const handleHashChange = () => {
 /** 이벤트 */
 window.addEventListener("load", handleLoad);
 window.addEventListener("resize", handleResize);
+domElements.userInput.addEventListener("input", (e) => handleInput(e));
 domElements.inputForm.addEventListener("submit", (e) => handleSubmit(e));
 window.addEventListener("hashchange", handleHashChange);
 
