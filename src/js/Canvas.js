@@ -191,6 +191,29 @@ class Canvas extends CanvasOption {
 	}
 
 	/**
+	 * @param {Uint8ClampedArray} data
+	 * @param {number} w
+	 * @param {number} h
+	 * @param {number} width
+	 * @returns 픽셀이 외곽선이면 true, 아니면 false를 반환
+	 */
+	isEdge(data, w, h, width) {
+		const index = (h * width + w) * 4;
+		const alpha = data[index + 3];
+
+		if (alpha <= 0) return false;
+
+		const direction = [
+			((h - 1) * width + w) * 4, // Up
+			((h + 1) * width + w) * 4, // Bottom
+			(h * width + (w - 1)) * 4, // Left
+			(h * width + (w + 1)) * 4, // Right
+		];
+
+		return direction.some((dir) => data[dir + 3] <= 0);
+	}
+
+	/**
 	 * @param {object} params
 	 * @param {number} params.stringCenterX 문자열 중심의 x좌표 (물리적 크기)
 	 * @param {number} params.stringCenterY 문자열 중심의 y좌표 (물리적 크기)
@@ -215,21 +238,20 @@ class Canvas extends CanvasOption {
 		const { data, width, height, fontBoundingBoxAscent, fontBoundingBoxDescent } = this.isMain(x) ? this.mainTextData : this.subTextData;
 		const stringCenterX = x * this.dpr - width / 2;
 		const stringCenterY = y * this.dpr - (height + fontBoundingBoxAscent + fontBoundingBoxDescent) / 2;
+		const radius = PARTICLE.RADIUS - TEXT.RADIUS_OFFSET * this.textLength;
 
-		const particleFrequency = this.isSmallScreen ? TEXT.SMALL_FREQUENCY : TEXT.GENERAL_FREQUENCY;
-		for (let h = 0; h < height; h += particleFrequency) {
-			for (let w = 0; w < width; w += particleFrequency) {
-				const index = (h * width + w) * 4;
-				const alpha = data[index + 3];
+		for (let h = 0; h < height; h++) {
+			for (let w = 0; w < width; w++) {
+				const shouldRender = Math.random() < (this.isSmallScreen ? TEXT.SMALL_CREATE_RATIO : TEXT.CREATE_RATIO);
 
-				if (alpha > 0) {
+				if (this.isEdge(data, w, h, width) && shouldRender) {
 					const { vx, vy } = this.calculateTextParticleVelocity({ stringCenterX, stringCenterY, w, h, x, y });
 					const params = {
 						x,
 						y,
 						vx,
 						vy,
-						radius: PARTICLE.RADIUS - 0.02 * this.textLength,
+						radius,
 						color: setHslaColor({ hue: randomInt(TEXT.MIN_HUE, TEXT.MAX_HUE) }),
 					};
 
@@ -325,7 +347,7 @@ class Canvas extends CanvasOption {
 	updateCircleParticle() {
 		for (let i = this.circleParticles.length - 1; i >= 0; i--) {
 			const circle = this.circleParticles[i];
-			circle.update(this.textLength);
+			circle.update();
 			circle.draw();
 
 			if (Math.random() < SPARK.CIRCLE_CREATION_RATE * this.textLength) {

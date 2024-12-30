@@ -30,9 +30,9 @@ class CircleParticle extends Particle {
 		this.ctx.restore();
 	}
 
-	update(textLength) {
+	update() {
 		this.radius += CIRCLE.RADIUS_ADJUST_OFFSET;
-		this.opacity -= CIRCLE.OPACITY_ADJUST_OFFSET + CIRCLE.OPACITY_ADJUST_OFFSET_SUB / textLength;
+		this.opacity -= CIRCLE.OPACITY_ADJUST_OFFSET;
 		this.vy += this.gravity;
 		super.update();
 		this.radius *= CIRCLE.RADIUS_ADJUST_RATE;
