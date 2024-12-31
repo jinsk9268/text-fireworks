@@ -107,6 +107,8 @@ describe("Canvas 클래스 파티클 생성 테스트", () => {
 				const [x, y, vx, vy, width, height, offset] = [100, 100, 10, 10, 8, 10, 4];
 				jest.spyOn(canvasInst, "isMain").mockReturnValue(isMain);
 				jest.spyOn(canvasInst, "calculateTextParticleVelocity").mockReturnValue({ vx, vy });
+				jest.spyOn(canvasInst, "isEdge").mockReturnValue(alphaValue === 0 ? false : true);
+				jest.spyOn(Math, "random").mockReturnValue(isSmallScreen ? 0.3 : 0.4);
 
 				canvasInst.mainTextData = getTextData({ widthOrHeightZero, width, height, alphaValue });
 				canvasInst.subTextData = getTextData({ widthOrHeightZero, width: width - offset, height: height - offset, alphaValue });
@@ -118,9 +120,8 @@ describe("Canvas 클래스 파티클 생성 테스트", () => {
 					expect(canvasInst.textParticles).toHaveLength(0);
 					expect(spyAcquireParticle).not.toHaveBeenCalled();
 				} else {
-					const expectedFrequency = canvasInst.isSmallScreen ? TEXT.SMALL_FREQUENCY : TEXT.GENERAL_FREQUENCY;
 					const textData = isMain ? canvasInst.mainTextData : canvasInst.subTextData;
-					const expectedLen = Math.ceil(textData.width / expectedFrequency) * Math.ceil(textData.height / expectedFrequency);
+					const expectedLen = textData.width * textData.height;
 					expectedCreatedParticleArr({ particleArr: canvasInst.textParticles, expectedLen, particle: TextParticle });
 				}
 			},

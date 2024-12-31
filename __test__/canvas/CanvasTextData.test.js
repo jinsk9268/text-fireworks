@@ -42,7 +42,7 @@ describe("Canvas 클래스 textData 생성 테스트", () => {
 
 		canvasInst.adjustFontSize();
 
-		const expectedTempSize = 85.7375; // 간단하므로 수기계산함
+		const expectedTempSize = 98; // 간단하므로 수기계산함
 		const expectedMainFontSize = Math.round(expectedTempSize);
 
 		expect(spySetMainFontsize).toHaveBeenCalledWith(expectedTempSize);
