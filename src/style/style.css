@@ -59,7 +59,10 @@ body {
 	align-items: center;
 	width: calc((100vw + 100vh) * 0.13);
 	border-radius: 30px;
-	box-shadow: 0px 0px 20px 10px #fffbc5, 0px 0px 30px 20px #fef052, 0px 0px 60px 30px #fff700;
+	box-shadow:
+		0 0 10px #fffbc5,
+		0 0 40px #fef052,
+		0 0 60px #fff700;
 	z-index: 0;
 }
 
@@ -80,7 +83,6 @@ body {
 	padding: 0.875rem;
 	border: none;
 	border-radius: 30px;
-	box-shadow: inset 10px 10px 20px rgba(255, 255, 255, 0.35), inset -10px -10px 20px rgba(255, 255, 255, 0.35);
 	background-color: black;
 	opacity: 0.9;
 	color: white;
