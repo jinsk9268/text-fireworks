@@ -25,10 +25,21 @@ class TextData extends CanvasOption {
 
 		const { width, fontBoundingBoxAscent = 0, fontBoundingBoxDescent = 0 } = this.ctx.measureText(this.text);
 
+		let isMobile;
+		if(navigator.userAgentData) {
+			isMobile = navigator.userAgentData.mobile;
+		} else {
+			isMobile = /Mobile|Android|iPhone|iPad/i.test(navigator.userAgent);
+		}
+
 		const x = (this.mainX - width / 2) * this.dpr;
-		const y = (this.mainY - this.fontSize / 2 - fontBoundingBoxDescent - fontBoundingBoxAscent) * this.dpr;
+		const y = isMobile 
+					? (this.mainY - this.fontSize / 2 - fontBoundingBoxAscent) * this.dpr
+					: (this.mainY - this.fontSize / 2 - fontBoundingBoxDescent - fontBoundingBoxAscent) * this.dpr;
 		const imgWidth = width * this.dpr;
-		const imgHeight = (this.fontSize + fontBoundingBoxAscent + fontBoundingBoxDescent) * this.dpr;
+		const imgHeight = isMobile
+							? (this.fontSize + fontBoundingBoxDescent) * this.dpr
+							: (this.fontSize + fontBoundingBoxAscent + fontBoundingBoxDescent) * this.dpr;
 
 		if (width) {
 			this.textPixelData = this.ctx.getImageData(x, y, imgWidth, imgHeight);
